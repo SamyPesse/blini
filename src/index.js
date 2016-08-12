@@ -1,7 +1,9 @@
 
 module.exports = {
-    Schema:     require('./schema'),
-    Model:      require('./model'),
+    Connection: require('./Connection'),
+    Schema:     require('./Schema'),
+    Model:      require('./Model'),
     Validation: require('./Validation'),
-    Type:       require('./Type')
+    Type:       require('./Type'),
+    Index:      require('./Index')
 };

@@ -1,6 +1,6 @@
 # orm
 
-Modern ORM for MongoDB based on [immutable](https://facebook.github.io/immutable-js/) data structure.
+Modern ORM for MongoDB based on [immutable](https://facebook.github.io/immutable-js/) data structure and promises.
 
 ### Installation
 
@@ -11,7 +11,13 @@ $ npm install --save
 ### Usage
 
 ```js
-const { Schema, Model, Validation, Type } = require('orm')
+const { Schema, Model, Validation, Type, Connection } = require('orm')
+```
+
+##### Create a connection to MongoDB
+
+```js
+const connection = new Connection('mongodb://localhost:27017/myproject');
 ```
 
 ##### Create a schema
@@ -47,9 +53,17 @@ class User extends Model(schema) {
 
 ### API
 
+#### `Connection(url: String)`
+
+Create a new connection to MongoDB.
+
+###### `connection.close(): Promise`
+
+Close the connection to MongoDB.
+
 #### `Type`
 
-###### `Type.String` and `Type.Number`
+###### `Type.String`, `Type.Number` and `Type.Mixed`
 
 Native JavaScript types.
 
@@ -68,3 +82,9 @@ Map is an unordered iterable of (key, value) pairs
 ###### `Type.Ref(model: String)`
 
 Reference to another document.
+
+#### `Validation`
+
+###### `Validation.default(value: Mixed)`
+
+A validation to default the value if non existant.

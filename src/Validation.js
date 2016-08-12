@@ -12,25 +12,60 @@ class Validation {
     /**
      * Validate a value, throws and error if failed
      * @param {Mixed} value
+     * @return {Mixed}
      */
 
     validate(value) {
-        this.fn(value);
+        return this.fn(value);
     }
+
+    /**
+     * Enforce that the value has a length superior to "min"
+     * @param {Mixed} defaultValue
+     * @return {Validation}
+     */
+
+    static default(defaultValue) {
+        return new Validation(function(value) {
+            if (typeof value === 'undefined') {
+                return defaultValue;
+            }
+            
+            return value;
+        });
+    }
+
+    /**
+     * Enforce that the value has a length superior to "min"
+     * @param {Number} min
+     * @param {String} message
+     * @return {Validation}
+     */
 
     static minLength(min, message) {
         return new Validation(function(value) {
             if (value.length < min) {
                 throw new Error(message);
             }
+
+            return value;
         });
     }
+
+    /**
+     * Enforce that the value has a length inferior to "max"
+     * @param {Number} max
+     * @param {String} message
+     * @return {Validation}
+     */
 
     static maxLength(max, message) {
         return new Validation(function(value) {
             if (value.length > max) {
                 throw new Error(message);
             }
+
+            return value;
         });
     }
 }
