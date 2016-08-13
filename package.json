@@ -7,7 +7,7 @@
     "dist": "babel ./src --out-dir ./lib",
     "prepublish": "npm run prepublish",
     "lint": "eslint ./",
-    "pretest": "mongo testing --eval \"db.dropDatabase()\"",
+    "pretest": "./tests/prepare.sh",
     "test": "./node_modules/.bin/mocha ./tests/all.js --compilers js:babel-register --bail --reporter=list"
   },
   "repository": {
@@ -25,6 +25,7 @@
   "homepage": "https://github.com/SamyPesse/mrgo#readme",
   "dependencies": {
     "immutable": "^3.8.1",
+    "is": "^3.1.0",
     "mongodb": "^2.2.5",
     "q": "^1.4.1"
   },

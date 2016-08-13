@@ -1,7 +1,10 @@
+const { Map } = require('immutable');
 const Type = require('./Type');
 
 class Schema extends Type {
-    constructor(fields) {
+    constructor(fields = {}) {
+        fields = new Map(fields);
+
         function serialize(doc) {
             return fields
                 .map(function(type, key) {
@@ -25,6 +28,15 @@ class Schema extends Type {
             deserialize,
             ...fields
         });
+    }
+
+    /**
+     * Get default values for this schema
+     * @return {Object} values
+     */
+
+    getDefaultValues() {
+        return this.toJS({});
     }
 }
 

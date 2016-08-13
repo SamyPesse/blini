@@ -5,5 +5,6 @@ module.exports = {
     Model:      require('./Model'),
     Validation: require('./Validation'),
     Type:       require('./Type'),
-    Index:      require('./Index')
+    Index:      require('./MongoIndex'),
+    Query:      require('./Query')
 };

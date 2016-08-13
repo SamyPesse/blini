@@ -2,12 +2,6 @@ const Promise = require('q');
 const Immutable = require('immutable');
 
 const DEFAULTS = {
-    // Schema used for validating this document
-    __schema:       null,
-    // Connection used for working with the database
-    __connection:   null,
-    // Name of the collection
-    __collection:   null,
     // Previous version of the document remotly
     __prevRevision: null
 };
@@ -21,7 +15,7 @@ const Document = {
      */
 
     getSchema() {
-        return this.get('__schema');
+        return this.constructor.schema;
     },
 
     /**
@@ -30,7 +24,7 @@ const Document = {
      */
 
     getConnection() {
-        return this.get('__connection');
+        return this.constructor.connection;
     },
 
     /**
@@ -39,18 +33,7 @@ const Document = {
      */
 
     getCollectionName() {
-        return this.get('__collection');
-    },
-
-    /**
-     * Get an interface to work with the collection.
-     * @return {Promise<MongoDB.Collection>} collection
-     */
-
-    getCollection() {
-        const connection = this.getConnection();
-        const name = this.getCollectionName();
-        return connection.getCollection(name);
+        return this.constructor.collection;
     },
 
     /**
@@ -61,7 +44,7 @@ const Document = {
     save() {
         const doc = this;
 
-        return this.getCollection()
+        return this.constructor.getCollection()
         .then(function(col) {
             const json = doc.toMongo();
 

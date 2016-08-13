@@ -48,6 +48,19 @@ class Index extends Record(DEFAULTS) {
 
         return options;
     }
+
+    /**
+     * Create an unique index
+     * @param {Object} props
+     * @return {Index}
+     */
+
+    static Unique(props) {
+        return new Index({
+            unique: true,
+            ...props
+        });
+    }
 }
 
 module.exports = Index;

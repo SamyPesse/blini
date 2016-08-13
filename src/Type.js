@@ -1,3 +1,4 @@
+const is = require('is');
 const { Record, List } = require('immutable');
 const { ObjectID } = require('mongodb');
 const MongoIndex = require('./MongoIndex');
@@ -33,6 +34,10 @@ class Type extends Record(DEFAULTS) {
      */
 
     toJS(value) {
+        if (is.undefined(value)) {
+            return;
+        }
+
         const { deserialize } = this;
         return deserialize(value);
     }
@@ -44,6 +49,10 @@ class Type extends Record(DEFAULTS) {
      */
 
     toMongo(value) {
+        if (is.undefined(value)) {
+            return;
+        }
+        
         const { serialize } = this;
         return serialize(value);
     }

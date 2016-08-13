@@ -64,6 +64,20 @@ class Connection {
             return db.collection(collection);
         });
     }
+
+    /**
+     * Setup a collection for a model:
+     *  - Creates it if non existant
+     *  - Create indexes
+     *
+     * @param {ModelConstructor} Model
+     * @return {Promise}
+     */
+
+    setupCollectionFor(Model) {
+        const schema = Model.schema;
+        const indexes = schema.getIndexes();
+    }
 }
 
 module.exports = Connection;

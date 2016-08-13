@@ -28,4 +28,12 @@ describe('Model', function() {
 
     });
 
+    describe('.query', function() {
+
+        it('should return a query object', function() {
+            User.query();
+        });
+
+    });
+
 });

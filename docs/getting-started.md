@@ -61,7 +61,7 @@ Once the data schema is defined, the next step is to create the model which stor
 around the database for a schema.
 
 ```js
-class User extends Model(userSchema, connection, 'users') {
+class User extends Model(userSchema, connection, 'User') {
     static getByUsername(username) {
         return this
             .findOne({
