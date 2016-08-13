@@ -1,59 +1,24 @@
 const Promise = require('q');
 const mquery = require('mquery');
-const {Record, List} = require('immutable');
+const { Record, List, OrderedMap } = require('immutable');
 
 const DEFAULTS = {
     // Model related to this query
-    model:   null,
+    model:      null,
     // Type of query
-    operations: List()
+    operations: List(),
+    // List of fields to populate
+    toPopulate: OrderedMap()
 };
 
 // List of methods
 const METHODS = [
-    'all',
-    'and',
-    'box',
-    'circle',
-    'comment',
-    'distinct',
-    'equals',
-    'exists',
-    'find',
-    'findOne',
-    'geometry',
-    'gt',
-    'gte',
-    'hint',
-    'in',
-    'intersects',
-    'limit',
-    'lt',
-    'lte',
-    'maxDistance',
-    'maxScan',
-    'maxTime',
-    'mod',
-    'ne',
-    'near',
-    'nin',
-    'nor',
-    'or',
-    'polygon',
-    'read',
-    'regex',
-    'select',
-    'setOptions',
-    'size',
-    'skip',
-    'slaveOk',
-    'slice',
-    'snapshot',
-    'sort',
-    'tailable',
-    'where',
-    'within',
-    'within'
+    'all', 'and', 'box', 'circle', 'comment', 'distinct', 'equals',
+    'exists', 'find', 'findOne', 'geometry', 'gt', 'gte', 'hint',
+    'in', 'intersects', 'limit', 'lt', 'lte', 'maxDistance', 'maxScan',
+    'maxTime', 'mod', 'ne', 'near', 'nin', 'nor', 'or', 'polygon', 'read',
+    'regex', 'select', 'setOptions', 'size', 'skip', 'slaveOk', 'slice',
+    'snapshot', 'sort', 'tailable', 'where', 'within'
 ];
 
 /**
@@ -63,6 +28,23 @@ class Query extends Record(DEFAULTS) {
     constructor(model) {
         super({
             model
+        });
+    }
+
+    /**
+     * Mark a field for post query population.
+     * @param {String} field
+     * @param {Object} options
+     * @return {Query} query
+     */
+
+    populate(field, options = {}) {
+        let { toPopulate } = this;
+
+        toPopulate = toPopulate.set(field, options);
+
+        return this.merge({
+            toPopulate
         });
     }
 
@@ -82,7 +64,7 @@ class Query extends Record(DEFAULTS) {
                 if (doc) {
                     return doc;
                 }
-                
+
                 return new List(accu);
             });
     }
@@ -97,7 +79,7 @@ class Query extends Record(DEFAULTS) {
     fetch() {
         const { model } = this;
 
-        return this.toMquery()
+        return this.toMQuery()
             .then(function({query}) {
                 let deferred = Promise.defer();
 
@@ -135,7 +117,7 @@ class Query extends Record(DEFAULTS) {
      * @return {Promise<mquery.Query>}
      */
 
-    toMquery() {
+    toMQuery() {
         const { model, operations } = this;
 
         return model.getCollection()

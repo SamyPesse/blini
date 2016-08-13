@@ -4,7 +4,7 @@ const { List } = require('immutable');
 const { Query } = require('../src');
 const User = require('./fixtures/user');
 
-describe.only('Query', function() {
+describe('Query', function() {
 
     describe('.find()', function() {
         it('should return all documents', function() {

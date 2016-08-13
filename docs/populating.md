@@ -58,3 +58,5 @@ comment.populate('post')
         // newComment.post is a Post instance
     });
 ```
+
+### Populating sub-documents

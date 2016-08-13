@@ -2,13 +2,45 @@
 
 `mrgo` (pronounced "Mister Go") is a modern ORM for **MongoDB** based on [immutable](https://facebook.github.io/immutable-js/) data structure and promises.
 
-**Mrgo is currently in beta.** Don't use it for production applications.
+**Mrgo is currently in alpha.** API may changed, don't use it for production applications.
+
+### Example
+
+```js
+import { Schema, Type, Model, Connection } from 'mrgo'
+const connection = new Connection('mongodb://localhost/test')
+
+const postSchema = new Schema({
+    title: Type.String(),
+    views: Type.Set(Type.String)
+})
+
+class Post extends Model(postSchema, connection, 'Cat') {
+    get summary() {
+        return `Post ${this.title},  ${this.likes.size} readers`
+    }
+
+    addView(ip) {
+        const { views } = this;
+        return this.merge({
+            views: views.add(ip)
+        })
+    }
+}
+
+const post = new Post({ title: 'My Super blog post' })
+
+post.addView('127.0.0.1').save()
+    .then(function() {
+        ...
+    })
+```
 
 ### Why?
 
 First of all, this library is a Work-In-Progress and Proof-Of-Concept.
 
-Before creating Mrgo, I've used a lot Mongoose
+Before creating Mrgo, I've used a lot [Mongoose](http://mongoosejs.com), Mrgo borrowed a few concepts from it.
 
 ### Principles
 
