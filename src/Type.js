@@ -1,4 +1,5 @@
 const {Record, Set, List, Map} = require('immutable');
+const { ObjectID } = require('mongodb');
 const MongoIndex = require('./MongoIndex');
 
 const DEFAULTS = {
@@ -7,9 +8,9 @@ const DEFAULTS = {
     // Transform data from mongo
     deserialize: (value => value),
     // List of validation functions
-    validations: List(),
+    validations: new List(),
     // Definition for the index concerning this field
-    index:       MongoIndex()
+    index:       new MongoIndex()
 };
 
 /**
@@ -18,6 +19,13 @@ const DEFAULTS = {
  */
 
 class Type extends Record(DEFAULTS) {
+    constructor(values) {
+        values = values || {};
+        values.index = new MongoIndex(values.index);
+
+        super(values);
+    }
+
     /**
      * Transform a value from Mongo.
      * @param {Mixed} value
@@ -66,6 +74,19 @@ class Type extends Record(DEFAULTS) {
         return new Type({
             serialize:   Number,
             deserialize: Number,
+            ...props
+        });
+    }
+
+    /**
+     * Native ObjectID for mongo
+     * @return {Type}
+     */
+
+    static ObjectID(props) {
+        return new Type({
+            serialize:   ObjectID,
+            deserialize: ObjectID,
             ...props
         });
     }

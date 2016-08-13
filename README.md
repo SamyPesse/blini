@@ -28,6 +28,7 @@ A schema describe the structure of the documents.
 const schema = new Schema({
     username: Type.String({
         validation: [
+            Validation.required(),
             Validation.minLength(3, 'Username should be 3 characters min'),
             Validation.maxLength(30, 'Username should be 40 characters max')
         ],
@@ -35,9 +36,11 @@ const schema = new Schema({
             unique: true
         }
     }),
-    books: Type.Set(
-        Type.Ref('Book')
-    )
+    books: Type.Set(Type.Ref('Book'), {
+        validations: [
+            Validation.default([]),
+        ]
+    })
 })
 ```
 
@@ -63,7 +66,7 @@ Close the connection to MongoDB.
 
 #### `Type`
 
-###### `Type.String`, `Type.Number` and `Type.Mixed`
+###### `Type.String`, `Type.Number`, `Type.ObjectID` and `Type.Mixed`
 
 Native JavaScript types.
 
@@ -84,6 +87,10 @@ Map is an unordered iterable of (key, value) pairs
 Reference to another document.
 
 #### `Validation`
+
+###### `Validation.required(message: String)`
+
+A validation to enforce that a field is defined.
 
 ###### `Validation.default(value: Mixed)`
 

@@ -20,7 +20,23 @@ class Validation {
     }
 
     /**
-     * Enforce that the value has a length superior to "min"
+     * Enforce that a value is defined
+     * @param {String} message
+     * @return {Validation}
+     */
+
+    static required(message) {
+        return new Validation(function(value) {
+            if (typeof value === 'undefined') {
+                throw new Error(message);
+            }
+
+            return value;
+        });
+    }
+
+    /**
+     * Default the value if non existant
      * @param {Mixed} defaultValue
      * @return {Validation}
      */
@@ -30,7 +46,7 @@ class Validation {
             if (typeof value === 'undefined') {
                 return defaultValue;
             }
-            
+
             return value;
         });
     }

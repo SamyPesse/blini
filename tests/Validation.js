@@ -1,5 +1,4 @@
 const expect = require('expect');
-
 const { Validation } = require('../src');
 
 describe('Validation', function() {

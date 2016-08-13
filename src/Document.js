@@ -1,14 +1,14 @@
-const {Stack} = require('immutable');
+const Immutable = require('immutable');
 
 const DEFAULTS = {
     // Schema used for validating this document
-    __schema:     null,
+    __schema:       null,
     // Connection used for working with the database
-    __connection: null,
+    __connection:   null,
     // Name of the collection
-    __collection: null,
-    // Stack of unsaved revisions, each revision is a document
-    __revisions:  Stack()
+    __collection:   null,
+    // Previous version of the document remotly
+    __prevRevision: null
 };
 
 const Document = {
@@ -83,7 +83,50 @@ const Document = {
      */
 
     cleanup() {
-        return this.merge({ revisions: new Stack() });
+        return super.merge({
+            __prevRevision: null
+        });
+    },
+
+    /**
+     * Test whaever the document exists remotly
+     * @return {Boolean} clean
+     */
+
+    isSaved() {
+        return this.has('_id');
+    },
+
+    /**
+     * Test whaever the document is clean (nothing to save)
+     * @return {Boolean} clean
+     */
+
+    isClean() {
+        const savedRevision = this.__prevRevision;
+
+        if (!this.isSaved()) {
+            return false;
+        }
+
+        if (!savedRevision) {
+            return true;
+        }
+
+        return Immutable.is(
+            savedRevision.remove('__prevRevision'),
+            this.remove('__prevRevision')
+        );
+    },
+
+    /**
+     * Compare this document to another one and returns the differences
+     * @param {Document} revision
+     * @return {Map} differences
+     */
+
+    compareWith(revision) {
+
     }
 };
 

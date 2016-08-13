@@ -29,7 +29,7 @@ function Model(schema, connection, collection) {
     }
 
     // Mix in `Document` methods.
-    for (const method in Node) {
+    for (const method in Document) {
         ResultModel.prototype[method] = Document[method];
     }
 
