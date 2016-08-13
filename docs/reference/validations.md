@@ -13,6 +13,7 @@ A Validation allows you to define a transformation or rejection that will be app
     - [minLength](#minlength)
     - [maxLength](#maxlength)
     - [regExp](#regexp)
+    - [oneOf](#oneof)
 
 ## General validations
 
@@ -42,3 +43,8 @@ Enforce that the string value is less than `max` characters long.
 `Validation.regExp(re: RegExp, message: String)`
 
 Enforce that the string value match a RegExp (`re`).
+
+### `oneOf`
+`Validation.oneOf(constants: Array, message: String)`
+
+Enforce that the value is one of the constants.

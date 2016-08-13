@@ -26,6 +26,8 @@ class Validation {
      */
 
     static required(message) {
+        message = message || 'Field is required';
+
         return new Validation(function(value) {
             if (typeof value === 'undefined') {
                 throw new Error(message);
@@ -59,6 +61,8 @@ class Validation {
      */
 
     static minLength(min, message) {
+        message = message || `Value should be longer than ${min} characters`;
+
         return new Validation(function(value) {
             if (value.length < min) {
                 throw new Error(message);
@@ -76,6 +80,8 @@ class Validation {
      */
 
     static maxLength(max, message) {
+        message = message || `Value should be less than ${max} characters`;
+
         return new Validation(function(value) {
             if (value.length > max) {
                 throw new Error(message);
@@ -93,8 +99,28 @@ class Validation {
      */
 
     static regExp(re, message) {
+        message = message || `Value should match ${re}`;
+
         return new Validation(function(value) {
             if (re.test(value)) {
+                throw new Error(message);
+            }
+
+            return value;
+        });
+    }
+
+    /**
+     * Enforce that the value is a constant
+     * @param {Array<Mixed>} constants
+     * @param {String} message
+     * @return {Validation}
+     */
+    static oneOf(constants, message) {
+        message = message || `Value should be one of ${constants.join(', ')}`;
+
+        return new Validation(function(value) {
+            if (constants.indexOf(value) < 0) {
                 throw new Error(message);
             }
 
