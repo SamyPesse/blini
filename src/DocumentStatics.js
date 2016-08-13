@@ -22,7 +22,7 @@ const DocumentStatics = {
         const schema = this.schema;
         const values = schema.toJS(json);
 
-        return new this.Model(values);
+        return new this.prototype.constructor(values);
     },
 
     /**

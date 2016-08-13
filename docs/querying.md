@@ -28,7 +28,17 @@ Post.where('clicks').gt(999).exec()
         // No more results
     }, function(err) {
         // Error
-    }, function(doc) {
+    }, function(post) {
         // Receive a document
     });
+```
+
+### Query one document
+`Query.findOne(): Query`
+
+```js
+Post.findOne({ _id: '...' }).exec()
+    .then(function(post) {
+
+    });``
 ```

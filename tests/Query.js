@@ -4,11 +4,10 @@ const { List } = require('immutable');
 const { Query } = require('../src');
 const User = require('./fixtures/user');
 
-describe('Query', function() {
+describe.only('Query', function() {
 
     describe('.find()', function() {
-
-        it.only('should return all documents', function() {
+        it('should return all documents', function() {
             return (new Query(User))
                 .find().exec()
                 .then(function(result) {
@@ -16,7 +15,17 @@ describe('Query', function() {
                     expect(result.size).toBe(1);
                 });
         });
+    });
 
+    describe('.findOne()', function() {
+        it('should return a document', function() {
+            return (new Query(User))
+                .findOne({ username: 'johndoe' }).exec()
+                .then(function(user) {
+                    expect(user).toBeA(User);
+                    expect(user.username).toBe('johndoe');
+                });
+        });
     });
 
 });

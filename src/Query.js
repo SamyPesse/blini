@@ -11,49 +11,49 @@ const DEFAULTS = {
 
 // List of methods
 const METHODS = [
-    'find',
-    'findOne',
-    'where',
-    'distinct',
     'all',
     'and',
     'box',
-    'within',
     'circle',
+    'comment',
+    'distinct',
     'equals',
     'exists',
+    'find',
+    'findOne',
     'geometry',
     'gt',
     'gte',
-    'lt',
-    'lte',
+    'hint',
     'in',
     'intersects',
-    'maxDistance',
-    'mod',
-    'ne',
-    'nin',
-    'nor',
-    'near',
-    'or',
-    'polygon',
-    'regex',
-    'select',
-    'size',
-    'slice',
-    'within',
-    'comment',
-    'hint',
     'limit',
+    'lt',
+    'lte',
+    'maxDistance',
     'maxScan',
     'maxTime',
-    'skip',
-    'sort',
+    'mod',
+    'ne',
+    'near',
+    'nin',
+    'nor',
+    'or',
+    'polygon',
     'read',
+    'regex',
+    'select',
+    'setOptions',
+    'size',
+    'skip',
     'slaveOk',
+    'slice',
     'snapshot',
+    'sort',
     'tailable',
-    'setOptions'
+    'where',
+    'within',
+    'within'
 ];
 
 /**
@@ -78,7 +78,11 @@ class Query extends Record(DEFAULTS) {
             .progress(function(doc) {
                 accu.push(doc);
             })
-            .then(function() {
+            .then(function(doc) {
+                if (doc) {
+                    return doc;
+                }
+                
                 return new List(accu);
             });
     }
@@ -96,19 +100,31 @@ class Query extends Record(DEFAULTS) {
         return this.toMquery()
             .then(function({query}) {
                 let deferred = Promise.defer();
-                let stream = query.stream();
 
-                stream.on('data', function(doc) {
-                    deferred.notify(model.fromMongo(doc));
-                });
+                // findOne doesn't support stream
+                if (query.op === 'findOne') {
+                    query.exec(function(err, doc) {
+                        if (err) {
+                            deferred.reject(err);
+                        } else {
+                            deferred.resolve(model.fromMongo(doc));
+                        }
+                    });
+                } else {
+                    let stream = query.stream();
 
-                stream.once('error', function(err) {
-                    deferred.reject(err);
-                });
+                    stream.on('data', function(doc) {
+                        deferred.notify(model.fromMongo(doc));
+                    });
 
-                stream.once('end', function(err) {
-                    deferred.resolve();
-                });
+                    stream.once('error', function(err) {
+                        deferred.reject(err);
+                    });
+
+                    stream.once('end', function(err) {
+                        deferred.resolve();
+                    });
+                }
 
                 return deferred.promise;
             });
