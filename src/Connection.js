@@ -1,3 +1,4 @@
+const Promise = require('q');
 const { MongoClient } = require('mongodb');
 
 class Connection {
@@ -7,7 +8,7 @@ class Connection {
 
         // Map of collection name -> Model
         this.models = {};
-        
+
         this.db;
     }
 
@@ -24,16 +25,10 @@ class Connection {
             return this._connection;
         }
 
-        this._connection = new Promise(function(resolve, reject) {
-            MongoClient.connect(infos, function(err, db) {
-                if (err) {
-                    reject(err);
-                } else {
-                    that.db = db;
-                    resolve();
-                }
+        this._connection = Promise.nfcall(MongoClient.connect, infos)
+            .then(function(db) {
+                that.db = db;
             });
-        });
 
         return this._connection;
     }
@@ -44,16 +39,29 @@ class Connection {
      */
 
     close() {
+        const { db } = this;
+
+        if (db) {
+            return Promise.reject(new Error('Connection is not established'));
+        }
+
+        return Promise.nfcall(db.close.bind(db));
+    }
+
+    /**
+     * Return a setup collection
+     *
+     * @param {String} collection
+     * @return {Promise<MongoDB.Collection>}
+     */
+
+    getCollection(collection) {
         let that = this;
 
-        return new Promise(function(resolve, reject) {
-            if (that.db) {
-                reject(new Error('Connection is not established'));
-            }
-
-            that.db.close(function() {
-                resolve();
-            });
+        return this.ensure()
+        .then(function() {
+            let { db } = that;
+            return db.collection(collection);
         });
     }
 }

@@ -24,7 +24,8 @@
   "homepage": "https://github.com/SamyPesse/mrgo#readme",
   "dependencies": {
     "immutable": "^3.8.1",
-    "mongodb": "^2.2.5"
+    "mongodb": "^2.2.5",
+    "q": "^1.4.1"
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",

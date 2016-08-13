@@ -18,6 +18,14 @@ describe('Model', function() {
 
     describe('.save', function() {
 
+        it('should insert a new document', function() {
+            const user = new User({
+                username: 'Test'
+            });
+
+            return user.save();
+        });
+
     });
 
 });

@@ -26,6 +26,6 @@ If you're using Mrgo for the first time, check out the [Getting Started](docs/ge
     - [Querying](docs/querying.md)
     - [Populating references](docs/populating.md)
 - **References**
-    - [Connection](docs/reference/conneciton.md)
+    - [Connection](docs/reference/connection.md)
     - [Types](docs/reference/types.md)
     - [Validations](docs/reference/validations.md)

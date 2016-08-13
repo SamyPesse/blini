@@ -27,6 +27,28 @@ class Query extends Record(DEFAULTS) {
 
         });
     }
+
+    /**
+     * Limit the maximum count of results
+     * @param {Number} n
+     * @return {Query} query
+     */
+
+    limit(n) {
+        // TODO
+        return this;
+    }
+
+    /**
+     * Skip n elements
+     * @param {Number} n
+     * @return {Query} query
+     */
+
+    skip(n) {
+        // TODO
+        return this;
+    }
 }
 
 module.exports = Query;

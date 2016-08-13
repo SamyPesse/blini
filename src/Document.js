@@ -1,5 +1,5 @@
+const Promise = require('q');
 const Immutable = require('immutable');
-const Query = require('./Query');
 
 const DEFAULTS = {
     // Schema used for validating this document
@@ -43,16 +43,14 @@ const Document = {
     },
 
     /**
-     * Get the collection of this document
-     * @return {MongoDB.Collection} collection
+     * Get an interface to work with the collection.
+     * @return {Promise<MongoDB.Collection>} collection
      */
 
     getCollection() {
         const connection = this.getConnection();
         const name = this.getCollectionName();
-        const { db } = connection;
-
-        return db.collection(name);
+        return connection.getCollection(name);
     },
 
     /**
@@ -62,21 +60,15 @@ const Document = {
 
     save() {
         const doc = this;
-        const schema = doc.getSchema();
-        const collection = doc.getCollection();
 
-        const json = schema.toMongo(doc);
+        return this.getCollection()
+        .then(function(col) {
+            const json = doc.toMongo();
 
-        return new Promise(function(resolve, reject) {
-            collection.save(json, function(err, result) {
-                console.log('save', err, result);
-
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(doc.cleanup());
-                }
-            });
+            return Promise.nfcall(col.save.bind(col), json);
+        })
+        .then(function() {
+            return doc.cleanup();
         });
     },
 
@@ -86,7 +78,7 @@ const Document = {
      */
 
     cleanup() {
-        return super.merge({
+        return this.merge({
             __prevRevision: null
         });
     },
@@ -123,13 +115,13 @@ const Document = {
     },
 
     /**
-     * Compare this document to another one and returns the differences
-     * @param {Document} revision
-     * @return {Map} differences
+     * Return the MongoDB representation of this document
+     * @return {JSON} json
      */
 
-    compareWith(revision) {
-
+    toMongo() {
+        const schema = this.getSchema();
+        return schema.toMongo(this);
     }
 };
 
