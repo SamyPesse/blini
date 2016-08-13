@@ -127,6 +127,20 @@ class Validation {
             return value;
         });
     }
+
+    /**
+     * Prevent a list or string to have more than "max",
+     * it doesn't throw error.
+     *
+     * @param {Number} max
+     * @return {Validation}
+     */
+
+    static limitAt(max) {
+        return new Validation(function(value) {
+            return value.slice(0, max);
+        });
+    }
 }
 
 module.exports = Validation;

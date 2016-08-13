@@ -14,6 +14,8 @@ A Validation allows you to define a transformation or rejection that will be app
     - [maxLength](#maxlength)
     - [regExp](#regexp)
     - [oneOf](#oneof)
+- [Iterable validations](#iterable-validations)
+    - [limitAt](#limitat)
 
 ## General validations
 
@@ -48,3 +50,10 @@ Enforce that the string value match a RegExp (`re`).
 `Validation.oneOf(constants: Array, message: String)`
 
 Enforce that the value is one of the constants.
+
+## Iterable Validations
+
+### `limitAt`
+`Validation.limitAt(max: Number)`
+
+Enforce that iterable doesn't have more than `max` element, it does not throw error, but normalize the value.
