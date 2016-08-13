@@ -5,7 +5,7 @@ const DocumentStatics = require('./DocumentStatics');
 
 const ModelOptions = Record({
     // Name of the collection
-    collection:    null
+    collection:    null,
     // Discriminator filter
     discriminator: null
 });
@@ -47,6 +47,7 @@ function Model(schema, connection, modelName, options = {}) {
     ResultModel.schema     = schema;
     ResultModel.connection = connection;
     ResultModel.collection = collection;
+    ResultModel.Model      = ResultModel;
 
     // Register the model in the connection
     connection.models[modelName] = ResultModel;
