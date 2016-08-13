@@ -10,9 +10,12 @@
 
 Mrgo tries to solve the question of ["Why?"](#why) with a few principles:
 
-1. **Immutable data**
+1. **Immutable data:** By using Immutable.js, the Mrgo is built in a stateless fashion using immutable data structures, which leads to much easier to reason about code, and a much easier time working with data sets.
 
-2. **Composition**
+2. **Simplicity:** Mrgo tries to  reduce the number of concepts.
+
+3. **Composition:** Instead of relying on a custom plugins logic to handle extensibility,
+Mrgo with ES6 classes inheritances use compositions to extend models.
 
 ### Documentation
 
@@ -20,7 +23,9 @@ If you're using Mrgo for the first time, check out the [Getting Started](docs/ge
 
 - **Guides**
     - [Getting started](docs/getting-started.md)
+    - [Querying](docs/querying.md)
+    - [Populating references](docs/populating.md)
 - **References**
-    - [Connection](docs/conneciton.md)
-    - [Types](docs/types.md)
-    - [Validations](docs/validations.md)
+    - [Connection](docs/reference/conneciton.md)
+    - [Types](docs/reference/types.md)
+    - [Validations](docs/reference/validations.md)
