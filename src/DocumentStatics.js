@@ -1,5 +1,9 @@
 const Query = require('./Query');
 
+/**
+ * Static methods for the document models.
+ */
+
 const DocumentStatics = {
     /**
      * Get an interface to work with the collection.
@@ -10,6 +14,17 @@ const DocumentStatics = {
         const connection = this.connection;
         const name = this.collection;
         return connection.getCollection(name);
+    },
+
+    /**
+     * Discriminate this model
+     * @param {Object} filter
+     * @param {Schema} schema
+     * @return {Model}
+     */
+
+    discriminate(filter, schema) {
+
     },
 
     /**
@@ -34,10 +49,9 @@ const DocumentStatics = {
         return new Query(this);
     },
 
-    /**
-     * Create a findOne query for this model
-     * @return {Query}
-     */
+    find(filter) {
+        return this.query().find(filter);
+    },
 
     findOne(filter) {
         return this.query().findOne(filter);

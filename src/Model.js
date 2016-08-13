@@ -47,7 +47,9 @@ function Model(schema, connection, modelName, options = {}) {
     ResultModel.schema     = schema;
     ResultModel.connection = connection;
     ResultModel.collection = collection;
+    ResultModel.options    = options;
     ResultModel.Model      = ResultModel;
+
 
     // Register the model in the connection
     connection.models[modelName] = ResultModel;

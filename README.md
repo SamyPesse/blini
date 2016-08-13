@@ -31,8 +31,8 @@ class Post extends Model(postSchema, connection, 'Cat') {
 const post = new Post({ title: 'My Super blog post' })
 
 post.addView('127.0.0.1').save()
-    .then(function() {
-        ...
+    .then(function(savedPost) {
+        console.log(savedPost.summary)
     })
 ```
 
@@ -40,7 +40,7 @@ post.addView('127.0.0.1').save()
 
 First of all, this library is a Work-In-Progress and Proof-Of-Concept.
 
-Before creating Mrgo, I've used a lot [Mongoose](http://mongoosejs.com), Mrgo borrowed a few concepts from it.
+Before creating Mrgo, I've used a lot [Mongoose](http://mongoosejs.com) for production applications, Mrgo borrowed a few concepts from it.
 
 ### Principles
 
