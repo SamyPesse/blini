@@ -73,4 +73,4 @@ If you're using Mrgo for the first time, check out the [Getting Started](docs/ge
 
 All contributions are super welcome!
 
-Slate is [Apache-licensed](LICENSE).
+Mrgo is [Apache-licensed](LICENSE).
