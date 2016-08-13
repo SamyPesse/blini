@@ -2,7 +2,12 @@ const { MongoClient } = require('mongodb');
 
 class Connection {
     constructor(dbInfos) {
+        // Infos to connect to the datavase
         this.infos = dbInfos;
+
+        // Map of collection name -> Model
+        this.models = {};
+        
         this.db;
     }
 

@@ -1,4 +1,4 @@
-const {Record, Set, List, Map} = require('immutable');
+const { Record, List } = require('immutable');
 const { ObjectID } = require('mongodb');
 const MongoIndex = require('./MongoIndex');
 

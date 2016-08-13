@@ -16,4 +16,8 @@ describe('Model', function() {
 
     });
 
+    describe('.save', function() {
+
+    });
+
 });

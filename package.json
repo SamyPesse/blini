@@ -1,5 +1,5 @@
 {
-  "name": "orm",
+  "name": "mrgo",
   "version": "0.0.0",
   "description": "Modern MongoDB ORM backed by immutable models",
   "main": "./lib/index.js",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SamyPesse/orm.git"
+    "url": "git+https://github.com/SamyPesse/mrgo.git"
   },
   "keywords": [
     "mongo"
@@ -19,9 +19,9 @@
   "author": "Samy Pesse <samypesse@gmail.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/SamyPesse/orm/issues"
+    "url": "https://github.com/SamyPesse/mrgo/issues"
   },
-  "homepage": "https://github.com/SamyPesse/orm#readme",
+  "homepage": "https://github.com/SamyPesse/mrgo#readme",
   "dependencies": {
     "immutable": "^3.8.1",
     "mongodb": "^2.2.5"

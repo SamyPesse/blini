@@ -1,4 +1,5 @@
 const Immutable = require('immutable');
+const Query = require('./Query');
 
 const DEFAULTS = {
     // Schema used for validating this document
@@ -67,7 +68,9 @@ const Document = {
         const json = schema.toMongo(doc);
 
         return new Promise(function(resolve, reject) {
-            collection.save(json, function(err) {
+            collection.save(json, function(err, result) {
+                console.log('save', err, result);
+
                 if (err) {
                     reject(err);
                 } else {
