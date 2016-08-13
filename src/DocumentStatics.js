@@ -55,8 +55,17 @@ const DocumentStatics = {
 
     findOne(filter) {
         return this.query().findOne(filter);
-    }
+    },
 
+    findById(id) {
+        return this.query().findOne({
+            _id: id
+        });
+    },
+
+    remove(filter) {
+        return this.query().remove(filter);
+    }
 };
 
 module.exports = DocumentStatics;

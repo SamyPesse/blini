@@ -20,7 +20,7 @@ describe('Model', function() {
 
         it('should insert a new document', function() {
             const user = new User({
-                username: 'Test'
+                username: 'test'
             });
 
             return user.save();
@@ -35,5 +35,26 @@ describe('Model', function() {
         });
 
     });
+
+    /* describe('.remove', function() {
+
+        it('should remove the document from the database', function() {
+            return User.findOne({
+                username: 'Test'
+            })
+            .then(function(user) {
+                return user.remove();
+            })
+            .then(function() {
+                return User.findOne({
+                    username: 'Test'
+                });
+            })
+            .then(function(user) {
+                expect(user).toBeFalsy();
+            });
+        });
+
+    });*/
 
 });

@@ -17,7 +17,7 @@ const METHODS = [
     'exists', 'find', 'findOne', 'geometry', 'gt', 'gte', 'hint',
     'in', 'intersects', 'limit', 'lt', 'lte', 'maxDistance', 'maxScan',
     'maxTime', 'mod', 'ne', 'near', 'nin', 'nor', 'or', 'polygon', 'read',
-    'regex', 'select', 'setOptions', 'size', 'skip', 'slaveOk', 'slice',
+    'regex', 'remove', 'select', 'setOptions', 'size', 'skip', 'slaveOk', 'slice',
     'snapshot', 'sort', 'tailable', 'where', 'within'
 ];
 

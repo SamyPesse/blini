@@ -19,34 +19,34 @@ describe('Schema', function() {
 
     });
 
-    describe('.getTypeByKey', function() {
+    describe('.getFieldByKey', function() {
 
         it('should return the type if the key exists', function() {
-            const type = userSchema.getTypeByKey('username');
+            const type = userSchema.getFieldByKey('username');
             expect(type).toBeA(Type.String);
         });
 
         it('should return undefined if the key does not exists', function() {
-            const type = userSchema.getTypeByKey('unknown');
+            const type = userSchema.getFieldByKey('unknown');
             expect(type).toBe(undefined);
         });
 
     });
 
-    describe('.resolveTypeByKey', function() {
+    describe('.resolveFieldByKey', function() {
 
         it('should return the type if the key exists', function() {
-            const type = userSchema.resolveTypeByKey('username');
+            const type = userSchema.resolveFieldByKey('username');
             expect(type).toBeA(Type.String);
         });
 
         it('should return undefined if the key does not exists', function() {
-            const type = userSchema.resolveTypeByKey('unknown');
+            const type = userSchema.resolveFieldByKey('unknown');
             expect(type).toBe(undefined);
         });
 
         it('should return the a deep type if exists', function() {
-            const type = teamSchema.resolveTypeByKey('members.user');
+            const type = teamSchema.resolveFieldByKey('members.user');
             expect(type).toBeA(Type.Ref);
         });
 

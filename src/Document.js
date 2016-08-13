@@ -37,6 +37,16 @@ const Document = {
     },
 
     /**
+     * Validate this document against the schema.
+     * @return {Promise<Document>}
+     */
+
+    validate() {
+        const schema = this.getSchema();
+        return schema.validate(this);
+    },
+
+    /**
      * Save the document to mongo DB
      * @return {Promise<Document>}
      */
@@ -52,6 +62,17 @@ const Document = {
         })
         .then(function() {
             return doc.cleanup();
+        });
+    },
+
+    /**
+     * Remove the document
+     * @return {Promise}
+     */
+
+    remove() {
+        return this.constructor.remove({
+            _id: this._id
         });
     },
 
@@ -72,7 +93,7 @@ const Document = {
      */
 
     isSaved() {
-        return this.has('_id');
+        return Boolean(this.get('_id'));
     },
 
     /**

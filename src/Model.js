@@ -1,5 +1,6 @@
 const { Record } = require('immutable');
 
+const Type = require('./types');
 const Document = require('./Document');
 const DocumentStatics = require('./DocumentStatics');
 
@@ -22,6 +23,13 @@ const ModelOptions = Record({
 function Model(schema, connection, modelName, options = {}) {
     options = ModelOptions(options);
 
+    // Add _id to schema if non existant
+    if (!schema.hasField('_id')) {
+        schema = schema.mergeFields({
+            _id: Type.ObjectID()
+        });
+    }
+
     const fieldValues = schema.getDefaultValues();
     const collection = options.collection || modelName.toLowerCase();
 
@@ -30,7 +38,11 @@ function Model(schema, connection, modelName, options = {}) {
         ...Document.DEFAULTS
     };
 
-    const ResultModel = Record(modelValues, modelName);
+    class ResultModel extends Record(modelValues, modelName) {
+        get id() {
+            return this._id;
+        }
+    }
 
     // Mix in `Document` methods.
     for (const method in Document) {
@@ -49,7 +61,6 @@ function Model(schema, connection, modelName, options = {}) {
     ResultModel.collection = collection;
     ResultModel.options    = options;
     ResultModel.Model      = ResultModel;
-
 
     // Register the model in the connection
     connection.models[modelName] = ResultModel;

@@ -48,9 +48,21 @@ class Schema extends Type(DEFAULTS) {
      * @return {Type} type
      */
 
-    getTypeByKey(field) {
+    getFieldByKey(field) {
         const { fields } = this;
         return fields.get(field);
+    }
+
+    /**
+     * Return true if a field is defined in the schema
+     *
+     * @param {String} field
+     * @return {Boolean} exists
+     */
+
+    hasField(field) {
+        const { fields } = this;
+        return fields.has(field);
     }
 
     /**
@@ -61,7 +73,7 @@ class Schema extends Type(DEFAULTS) {
      * @return {Type} type
      */
 
-    resolveTypeByKey(field) {
+    resolveFieldByKey(field) {
         const parts = field.split(FIELD_SEPARATOR);
 
         return parts.reduce(function(type, part, index) {
@@ -77,7 +89,7 @@ class Schema extends Type(DEFAULTS) {
                 return;
             }
 
-            return type.getTypeByKey(part);
+            return type.getFieldByKey(part);
         }, this);
     }
 
@@ -92,6 +104,29 @@ class Schema extends Type(DEFAULTS) {
         return fields
             .map(v => undefined)
             .toJS();
+    }
+
+    /**
+     * Merge new fields into this schema
+     * @param {Object|Map} newFields
+     * @return {Schema} schema
+     */
+
+    mergeFields(newFields) {
+        const { fields } = this;
+        return this.merge({
+            fields: fields.merge(newFields)
+        });
+    }
+
+    /**
+     * Validate a document aginst this schema.
+     * @param {Document} doc
+     * @return {Promise<Document>}
+     */
+
+    validate() {
+        
     }
 }
 
