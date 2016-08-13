@@ -1,6 +1,8 @@
-const Promise = require('q');
 const mquery = require('mquery');
 const { Record, List, OrderedMap } = require('immutable');
+
+const populate = require('./populate');
+const fetch = require('./fetch');
 
 const DEFAULTS = {
     // Model related to this query
@@ -50,28 +52,41 @@ class Query extends Record(DEFAULTS) {
 
     /**
      * Execute a query and returns its results
-     * @return {Promise<List<Model>|Model>}
+     * @return {Promise<List<Document>|Document>}
      */
 
     exec() {
-        let accu = [];
+        const { model, toPopulate } = this;
 
-        return this.fetch()
-            .progress(function(doc) {
-                accu.push(doc);
-            })
-            .then(function(doc) {
-                if (doc) {
-                    return doc;
-                }
+        return this.toMQuery()
+            .then(function({query}) {
+                let accu = [];
 
-                return new List(accu);
+                return fetch(model, query)
+
+                // Accumulate documents
+                .progress(function(doc) {
+                    accu.push(doc);
+                })
+
+                // Populate all results
+                .then(function() {
+                    return populate(toPopulate, accu);
+                })
+
+                .then(function(results) {
+                    if (query.op === 'findOne') {
+                        return results[0];
+                    }
+
+                    return new List(results);
+                });
             });
     }
 
     /**
-     * Fetch the result, dispatch a progress on promise for eaxh result.
-     * This method does not return a list of the result.
+     * Fetch the result as a stream.
+     * TODO: populate documents on the fly.
      *
      * @return {Promise}
      */
@@ -81,34 +96,7 @@ class Query extends Record(DEFAULTS) {
 
         return this.toMQuery()
             .then(function({query}) {
-                let deferred = Promise.defer();
-
-                // findOne doesn't support stream
-                if (query.op === 'findOne') {
-                    query.exec(function(err, doc) {
-                        if (err) {
-                            deferred.reject(err);
-                        } else {
-                            deferred.resolve(model.fromMongo(doc));
-                        }
-                    });
-                } else {
-                    let stream = query.stream();
-
-                    stream.on('data', function(doc) {
-                        deferred.notify(model.fromMongo(doc));
-                    });
-
-                    stream.once('error', function(err) {
-                        deferred.reject(err);
-                    });
-
-                    stream.once('end', function(err) {
-                        deferred.resolve();
-                    });
-                }
-
-                return deferred.promise;
+                return fetch(model, query);
             });
     }
 
