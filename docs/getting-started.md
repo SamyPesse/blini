@@ -52,7 +52,7 @@ const userSchema = new Schema({
 })
 ```
 
-Follow the ["Create a Schema"](docs/create-schema.md) guide to get more insight on
+Follow the ["Create a Schema"](create-schema.md) guide to get more insight on
 how schemas work.
 
 ### Create a new model
