@@ -17,18 +17,18 @@ describe('Schema', function() {
 
     });
 
-    /* describe('.getType', function() {
+    describe('.getTypeByKey', function() {
 
         it('should return the type if the key exists', function() {
-            const type = userSchema.getType('username');
-            expect(type).toBeA(Type);
+            const type = userSchema.getTypeByKey('username');
+            expect(type).toBeA(Type.String);
         });
 
         it('should return undefined if the key does not exists', function() {
-            const type = userSchema.getType('unknown');
+            const type = userSchema.getTypeByKey('unknown');
             expect(type).toBe(undefined);
         });
 
-    }); */
+    });
 
 });
