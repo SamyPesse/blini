@@ -12,6 +12,7 @@ A Validation allows you to define a transformation or rejection that will be app
 - [String validations](#string-validations)
     - [minLength](#minlength)
     - [maxLength](#maxlength)
+    - [regExp](#regexp)
 
 ## General validations
 
@@ -36,3 +37,8 @@ Enforce that the string value is at least `min` characters long.
 `Validation.maxLength(max: Number, message: String)`
 
 Enforce that the string value is less than `max` characters long.
+
+### `regExp`
+`Validation.regExp(re: RegExp, message: String)`
+
+Enforce that the string value match a RegExp (`re`).

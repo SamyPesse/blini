@@ -84,6 +84,23 @@ class Validation {
             return value;
         });
     }
+
+    /**
+     * Enforce that the value match a RegExp
+     * @param {RegExp} re
+     * @param {String} message
+     * @return {Validation}
+     */
+
+    static regExp(re, message) {
+        return new Validation(function(value) {
+            if (re.test(value)) {
+                throw new Error(message);
+            }
+
+            return value;
+        });
+    }
 }
 
 module.exports = Validation;

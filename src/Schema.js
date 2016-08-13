@@ -50,6 +50,23 @@ class Schema extends Record(DEFAULTS) {
             })
             .toJS();
     }
+
+    /**
+     * Transform a MongoDB document to a JS content.
+     * @param {JSON} json
+     * @return {Object} values
+     */
+
+    toJS(json) {
+        const { fields } = this;
+
+        return fields
+            .map(function(type, key) {
+                let value = json[key];
+                return type.toMongo(value);
+            })
+            .toJS();
+    }
 }
 
 module.exports = Schema;
