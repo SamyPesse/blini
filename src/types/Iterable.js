@@ -1,33 +1,33 @@
 const Type = require('./Type');
 
 const DEFAULTS = {
-    Iterable: null,
-    type: null
+    Iterable:  null,
+    valueType: null
 };
 
 class TypeIterable extends Type(DEFAULTS) {
-    constructor(Iterable, type, props) {
+    constructor(Iterable, valueType, props) {
         super({
             Iterable,
-            type,
+            valueType,
             ...props
         });
     }
 
     toJS(value) {
-        const { Iterable, type } = this;
+        const { Iterable, valueType } = this;
 
         let list = new Iterable(value);
-        list = list.map(x => type.toJS(x));
+        list = list.map(x => valueType.toJS(x));
 
         return list;
     }
 
     toMongo(value) {
-        const { type } = this;
+        const { valueType } = this;
 
         return value
-            .map(x => type.toMongo(x))
+            .map(x => valueType.toMongo(x))
             .toJS();
     }
 

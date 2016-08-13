@@ -65,9 +65,16 @@ class Schema extends Type(DEFAULTS) {
         const parts = field.split(FIELD_SEPARATOR);
 
         return parts.reduce(function(type, part, index) {
-            if (!(type instanceof TypeIterable
-            || type instanceof Schema)) {
-                throw new Error('Can\'t resolve field "' + field + '" in a non-iterable');
+            if (!type) {
+                return;
+            }
+
+            if (type instanceof TypeIterable) {
+                type = type.valueType;
+            }
+
+            if (!(type instanceof Schema)) {
+                return;
             }
 
             return type.getTypeByKey(part);
