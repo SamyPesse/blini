@@ -60,3 +60,12 @@ comment.populate('post')
 ```
 
 ### Populating sub-documents
+
+Populating also works for sub-documents and fields in iterables.
+
+```js
+comment.populate('likes.user')
+    .then(function(newComment) {
+        
+    });
+```
