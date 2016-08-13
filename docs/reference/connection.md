@@ -1,5 +1,9 @@
 ## Connection
 
+```js
+import { Connection } from 'mrgo'
+```
+
 A connection is a low-level interface between <name> and the MongoDB database.
 
 #### `Connection(url: String)`

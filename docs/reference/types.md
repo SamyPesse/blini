@@ -1,5 +1,9 @@
 # Types
 
+```js
+import { Type } from 'mrgo'
+```
+
 Types are definitions for schema fields. It defines how data should be serialized to MongoDB
 and deserialized from it, combine with a set of data validations to apply.
 

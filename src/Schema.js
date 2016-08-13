@@ -1,71 +1,30 @@
-const { Record, Map } = require('immutable');
+const Type = require('./Type');
 
-const DEFAULTS = {
-    fields: new Map()
-};
-
-class Schema extends Record(DEFAULTS) {
+class Schema extends Type {
     constructor(fields) {
+        function serialize(doc) {
+            return fields
+                .map(function(type, key) {
+                    let value = doc.get(key);
+                    return type.toMongo(value);
+                })
+                .toJS();
+        }
+
+        function deserialize(json) {
+            return fields
+                .map(function(type, key) {
+                    let value = json[key];
+                    return type.toJS(value);
+                })
+                .toJS();
+        }
+
         super({
-            fields: new Map(fields)
+            serialize,
+            deserialize,
+            ...fields
         });
-    }
-
-    /**
-     * Get all default values for this schema
-     * @param {Object} object
-     */
-
-    getDefaultValues() {
-        const { fields } = this;
-        return fields
-            .map((type) => null)
-            .toJS();
-    }
-
-    /**
-     * Get type for a field
-     * @param {String} field
-     * @return {Type}
-     */
-
-    getType(field) {
-        const { fields } = this;
-        return fields.get(field);
-    }
-
-    /**
-     * Transform a document to pure JSON for Mongo.
-     * @param {Document} doc
-     * @return {JSON} json
-     */
-
-    toMongo(doc) {
-        const { fields } = this;
-
-        return fields
-            .map(function(type, key) {
-                let value = doc.get(key);
-                return type.toMongo(value);
-            })
-            .toJS();
-    }
-
-    /**
-     * Transform a MongoDB document to a JS content.
-     * @param {JSON} json
-     * @return {Object} values
-     */
-
-    toJS(json) {
-        const { fields } = this;
-
-        return fields
-            .map(function(type, key) {
-                let value = json[key];
-                return type.toMongo(value);
-            })
-            .toJS();
     }
 }
 

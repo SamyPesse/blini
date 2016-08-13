@@ -52,6 +52,9 @@ const userSchema = new Schema({
 })
 ```
 
+Follow the ["Create a Schema"](docs/create-schema.md) guide to get more insight on
+how schemas work.
+
 ### Create a new model
 
 Once the data schema is defined, the next step is to create the model which store operations

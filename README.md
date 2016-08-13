@@ -23,6 +23,7 @@ If you're using Mrgo for the first time, check out the [Getting Started](docs/ge
 
 - **Guides**
     - [Getting started](docs/getting-started.md)
+    - [Create a Schema](docs/create-schema.md)
     - [Querying](docs/querying.md)
     - [Populating references](docs/populating.md)
 - **References**
