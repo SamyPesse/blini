@@ -55,7 +55,7 @@ const userSchema = new Schema({
 Follow the ["Create a Schema"](create-schema.md) guide to get more insight on
 how schemas work.
 
-### Create a new model
+### Create a new document model
 
 Once the data schema is defined, the next step is to create the model which store operations
 around the database for a schema.
@@ -70,4 +70,34 @@ class User extends Model(userSchema, connection, 'User') {
             .exec();
     }
 }
+```
+
+### Create new documents
+
+Using the document model, we can initialize new document instances and populate the database:
+
+```js
+let user = new User({
+    username: 'JohnDoe'
+})
+
+user.save()
+    .then(function(savedUser) {
+        ...
+    })
+```
+
+### Query the collection
+
+Querying documents from the database and update it:
+
+```js
+User.findOne({ username: 'JohnDoe' })
+    .then(function(user) {
+        const modified = user.merge({
+            username: "John"
+        })
+
+        return modified.save()
+    })
 ```
