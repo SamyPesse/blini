@@ -8,7 +8,7 @@
     "prepublish": "npm run prepublish",
     "lint": "eslint ./",
     "pretest": "./tests/prepare.sh",
-    "test": "./node_modules/.bin/mocha ./tests/all.js --compilers js:babel-register --bail --reporter=list"
+    "test": "./node_modules/.bin/mocha ./tests/all.js --compilers js:babel-register --bail --reporter=spec"
   },
   "repository": {
     "type": "git",
