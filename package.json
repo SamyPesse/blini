@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "scripts": {
     "dist": "babel ./src --out-dir ./lib",
-    "prepublish": "npm run prepublish",
+    "prepublish": "npm run dist",
     "lint": "eslint ./",
     "pretest": "./tests/prepare.sh",
     "test": "./node_modules/.bin/mocha ./tests/all.js --compilers js:babel-register --bail --reporter=spec"
