@@ -7,6 +7,8 @@ import { Type } from 'mrgo'
 Types are definitions for schema fields. It defines how data should be serialized to MongoDB
 and deserialized from it, combine with a set of data validations to apply.
 
+All types can accept as last argument an object `{ index: Index, validations: Array<Validation> }`. Checkout the references of [`Index`](./index.md) and [`Validation`](./validations.md)
+
 - [Native Types](#native-types)
 - [Iterable Types](#iterable-types)
     - [List](#list)
@@ -15,9 +17,9 @@ and deserialized from it, combine with a set of data validations to apply.
 
 ## Native Types
 
-`Type.String`, `Type.Number`, `Type.ObjectID` and `Type.Mixed`
+`Type.String`, `Type.Number`, `Type.Date`, `Type.ObjectID` and `Type.Mixed`
 
-Native JavaScript types.
+These are native JavaScript/MongoDB types.
 
 ## Iterable Types
 

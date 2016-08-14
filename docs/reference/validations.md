@@ -6,6 +6,8 @@ import { Validation } from 'mrgo'
 
 A Validation allows you to define a transformation or rejection that will be applied to data before flushing to the database.
 
+Validations are simple function accepting a value in input and returning a new value or throwing an error. Validations can be async by returning a promise.
+
 - [General validations](#general-validations)
     - [required](#required)
     - [default](#default)

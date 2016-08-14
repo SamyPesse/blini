@@ -1,6 +1,16 @@
 const Promise = require('q');
 
 /**
+ * Iterate over all values matching a field key in a document
+ * @param {Document} doc
+ * @param {String} key
+ * @param {Function} fn
+ */
+function iterFields(doc, key, fn) {
+    
+}
+
+/**
  * Populate a list of documents.
  * We fetch all references that requires population.
  *
@@ -13,6 +23,7 @@ function populate(fields, docs) {
     // const cache = {};
 
     // TODO
+
 
     return Promise(docs);
 }
