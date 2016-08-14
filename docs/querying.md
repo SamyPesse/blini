@@ -1,8 +1,8 @@
 # Querying
 
-Mrgo uses an immutable version of [mquery](https://github.com/aheckmann/mquery) to build MongoDB queries.
+Blini uses an immutable version of [mquery](https://github.com/aheckmann/mquery) to build MongoDB queries.
 
-Comparing to Mongoose, Mrgo queries doesn't have a `.then` and promise interface,
+Comparing to Mongoose, Blini queries doesn't have a `.then` and promise interface,
 you have to explicitly call '.exec()'.
 
 ### Execute the query

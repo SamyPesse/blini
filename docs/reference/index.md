@@ -1,7 +1,7 @@
 # Index
 
 ```js
-import { Index } from 'mrgo'
+import { Index } from 'Blini'
 ```
 
 - [Unique index](#unique-index)

@@ -8,7 +8,7 @@ Native types like `String`, `Number` and `ObjectID`.
 
 ### Iterable
 
-Mrgo doesn't have a type for mixed/object or array, instead it's using immutable data structure:
+Blini doesn't have a type for mixed/object or array, instead it's using immutable data structure:
 `Type.List`, `Type.Set` and `Type.Map`.
 
 Each of these types take a `Type` as first argument, it will be used to normalize and validate

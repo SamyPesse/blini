@@ -2,10 +2,10 @@
 
 ### Installing
 
-Mrgo is an npm module, so to install it you do:
+Blini is an npm module, so to install it you do:
 
 ```
-$ npm install mrgo --save
+$ npm install Blini --save
 ```
 
 ### Importing
@@ -13,14 +13,14 @@ $ npm install mrgo --save
 Once you've install it, you'll need to import it.
 
 ```js
-import { Schema, Model, Validation, Type, Connection } from 'mrgo'
+import { Schema, Model, Validation, Type, Connection } from 'Blini'
 ```
 
 ### Create a connection to MongoDB
 
 The first step
 
-In addition to loading the module, you need to give Mrgo a connection to work with. Without it, Mrgo can't access the database.
+In addition to loading the module, you need to give Blini a connection to work with. Without it, Blini can't access the database.
 
 The connection doesn't require to be initialized, it'll be established as soon as database operations are required.
 

@@ -1,5 +1,5 @@
 {
-  "name": "mrgo",
+  "name": "blini",
   "version": "0.0.0",
   "description": "Modern MongoDB ORM backed by immutable models",
   "main": "./lib/index.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SamyPesse/mrgo.git"
+    "url": "git+https://github.com/SamyPesse/blini.git"
   },
   "keywords": [
     "mongo"
@@ -20,9 +20,9 @@
   "author": "Samy Pesse <samypesse@gmail.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/SamyPesse/mrgo/issues"
+    "url": "https://github.com/SamyPesse/blini/issues"
   },
-  "homepage": "https://github.com/SamyPesse/mrgo#readme",
+  "homepage": "https://github.com/SamyPesse/blini#readme",
   "dependencies": {
     "immutable": "^3.8.1",
     "is": "^3.1.0",

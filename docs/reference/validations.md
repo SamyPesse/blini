@@ -1,7 +1,7 @@
 # Validations
 
 ```js
-import { Validation } from 'mrgo'
+import { Validation } from 'Blini'
 ```
 
 A Validation allows you to define a transformation or rejection that will be applied to data before flushing to the database.

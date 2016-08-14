@@ -1,7 +1,7 @@
 # Types
 
 ```js
-import { Type } from 'mrgo'
+import { Type } from 'Blini'
 ```
 
 Types are definitions for schema fields. It defines how data should be serialized to MongoDB
