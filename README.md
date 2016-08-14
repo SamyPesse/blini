@@ -68,6 +68,7 @@ If you're using Mrgo for the first time, check out the [Getting Started](docs/ge
     - [Connection](docs/reference/connection.md)
     - [Types](docs/reference/types.md)
     - [Validations](docs/reference/validations.md)
+    - [Document](docs/reference/document.md)
 
 ## Contributing!
 

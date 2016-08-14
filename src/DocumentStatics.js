@@ -49,6 +49,10 @@ const DocumentStatics = {
         return new Query(this);
     },
 
+    count(filter) {
+        return this.query().count(filter);
+    },
+
     find(filter) {
         return this.query().find(filter);
     },
