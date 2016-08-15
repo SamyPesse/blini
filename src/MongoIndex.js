@@ -1,4 +1,4 @@
-const Promise = require('q');
+const Promise = require('bluebird');
 const {Record} = require('immutable');
 
 const DEFAULTS = {

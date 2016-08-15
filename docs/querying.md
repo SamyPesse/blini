@@ -18,7 +18,7 @@ Post.where('clicks').gt(999).exec()
 ```
 
 ### Stream documents
-`Query.fetch(): Promise`
+`Query.stream(): ReadableStream`
 
 `.exec` returns a list of all documents by accumulating results from MongoDB.
 

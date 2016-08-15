@@ -24,8 +24,10 @@
   },
   "homepage": "https://github.com/SamyPesse/blini#readme",
   "dependencies": {
+    "bluebird": "^3.4.1",
     "immutable": "^3.8.1",
     "is": "^3.1.0",
+    "map-stream": "0.0.6",
     "mongodb": "^2.2.5",
     "mquery": "^1.11.0",
     "q": "^1.4.1",

@@ -1,4 +1,4 @@
-const Promise = require('q');
+const Promise = require('bluebird');
 const { MongoClient } = require('mongodb');
 
 class Connection {
@@ -21,14 +21,18 @@ class Connection {
         let that = this;
         let { infos } = this;
 
-        if (this._connection) {
-            return this._connection;
-        }
-
-        this._connection = Promise.nfcall(MongoClient.connect, infos)
-            .then(function(db) {
-                that.db = db;
+        if (!this._connection) {
+            this._connection = new Promise(function(resolve, reject) {
+                MongoClient.connect(infos, function(err, db) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        that.db = db;
+                        resolve();
+                    }
+                });
             });
+        }
 
         return this._connection;
     }
@@ -77,6 +81,8 @@ class Connection {
     setupCollectionFor(Model) {
         const schema = Model.schema;
         const indexes = schema.getIndexes();
+
+        // TODO
     }
 }
 

@@ -1,5 +1,5 @@
 const is = require('is');
-const Promise = require('q');
+const Promise = require('bluebird');
 const Immutable = require('immutable');
 const { List, Map } = Immutable;
 
@@ -60,7 +60,12 @@ const Document = {
         .then(function(col) {
             const json = doc.toMongo();
 
-            return Promise.nfcall(col.save.bind(col), json);
+            return new Promise(function(resolve, reject) {
+                col.save(json, function(err) {
+                    if (err) reject(err);
+                    else resolve();
+                });
+            });
         })
         .then(function() {
             return doc.cleanup();

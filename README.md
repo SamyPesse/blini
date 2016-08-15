@@ -36,15 +36,13 @@ post.addView('127.0.0.1').save()
     })
 ```
 
-## Why?
+## Principles
 
 First of all, this library is a Work-In-Progress and Proof-Of-Concept.
 
 Before creating Blini, I've used a lot [Mongoose](http://mongoosejs.com) for production applications, Blini borrowed a few concepts from it (Checkout the full list of [differences](docs/from-mongoose.md)).
 
-## Principles
-
-Blini tries to solve the question of ["Why?"](#why) with a few principles:
+But it differs on a few core principles:
 
 1. **Immutable data:** By using Immutable.js, the Blini is built in a stateless fashion using immutable data structures, which leads to much easier to reason about code, and a much easier time working with data sets.
 

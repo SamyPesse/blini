@@ -1,8 +1,10 @@
 const mquery = require('mquery');
+const Readable = require('stream').Readable;
 const { Record, List, OrderedMap } = require('immutable');
 
 const populate = require('./populate');
 const fetch = require('./fetch');
+const isStreamable = require('./isStreamable');
 
 const DEFAULTS = {
     // Model related to this query
@@ -56,30 +58,39 @@ class Query extends Record(DEFAULTS) {
      */
 
     exec() {
-        const { model, toPopulate } = this;
+        const { model } = this;
 
         return this.toMQuery()
             .then(function({query}) {
-                let accu = [];
+                return new Promise(function(resolve, reject) {
+                    let accu = [];
 
-                return fetch(model, query)
+                    if (!isStreamable(query)) {
+                        query.exec(function(err, doc) {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve(model.fromMongo(doc));
+                            }
+                        });
 
-                // Accumulate documents
-                .progress(function(doc) {
-                    accu.push(doc);
-                })
-
-                // Populate all results
-                .then(function() {
-                    return populate(toPopulate, accu);
-                })
-
-                .then(function(results) {
-                    if (query.op === 'findOne') {
-                        return results[0];
+                        return;
                     }
 
-                    return new List(results);
+                    fetch(model, query)
+                    .on('data', function(doc) {
+                        accu.push(doc);
+                    })
+                    .on('error', function(err) {
+                        reject(err);
+                    })
+                    .on('end', function() {
+                        if (query.op === 'findOne') {
+                            resolve(accu[0]);
+                        }
+
+                        resolve(new List(accu));
+                    });
                 });
             });
     }
@@ -88,16 +99,27 @@ class Query extends Record(DEFAULTS) {
      * Fetch the result as a stream.
      * TODO: populate documents on the fly.
      *
-     * @return {Promise}
+     * @return {Stream}
      */
 
-    fetch() {
+    stream() {
         const { model } = this;
+        const stream = new Readable();
 
-        return this.toMQuery()
+        this.toMQuery()
             .then(function({query}) {
-                return fetch(model, query);
+                if (!isStreamable(query)) {
+                    throw new Error('This query is not streamable');
+                }
+
+                fetch(model, query).pipe(stream);
+            })
+            .fail(function(err) {
+                stream.emit('error', err);
             });
+
+        return stream;
+
     }
 
     /**

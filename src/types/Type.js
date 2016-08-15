@@ -1,4 +1,4 @@
-const Promise = require('q');
+const Promise = require('bluebird');
 const { List, Record } = require('immutable');
 
 const DEFAULTS = {
@@ -33,17 +33,17 @@ const BaseType = (defaultValues = {}) => class extends Record({ ...DEFAULTS, ...
 
     /**
      * Validate a value using the type's validations
-     * @param {Mixed} value
+     * @param {Mixed} initialValue
+     * @param {String} fieldName
      * @return {Promise<Mixed>} newValue
      */
 
-    validate(value) {
+    validate(initialValue, fieldName) {
         const { validations } = this;
-        const initial = Promise(value);
 
-        return validations.reduce((p, fn) => {
-            return p.then(v => fn(v));
-        }, initial);
+        return Promise.reduce(validations, function(value, fn) {
+            return fn(value, fieldName);
+        }, initialValue);
     }
 };
 

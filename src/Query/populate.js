@@ -1,25 +1,52 @@
-const Promise = require('q');
+const Promise = require('bluebird');
 const { List } = require('immutable');
 
-/**
- * Iterate over all values matching a field key in a document
- * @param {Document} doc
- * @param {String} key
- * @param {Function} fn
- */
-function iterFields(doc, key, fn) {
+const TypeRef = require('../types/Ref');
 
+/**
+ * Populate a specific value in a document.
+ * @param {String} keyPath
+ * @param {Document} doc
+ * @param {Type} type
+ * @param {Object} cache
+ * @return {Promise<Document>} doc
+ */
+function populateKeyPath(keyPath, doc, type, cache = {}) {
+    const connection = doc.getConnection();
+    const value = doc.getIn(keyPath);
+
+    if (!(type instanceof TypeRef)) {
+        return Promise.reject(new Error('Cannot populate non-ref fields'));
+    }
+
+    // This reference has already been fetched
+    if (cache[value]) {
+        return doc.setIn(keyPath, cache[value]);
+    }
+
+    // Fetch the reference
+    return type.resolve(connection, value)
+    .then(function(resolved) {
+        cache[value] = resolved;
+        return doc.setIn(keyPath, resolved);
+    });
 }
 
 /**
- * Populate a field in a document
+ * Populate a field by its key in a document.
  * @param {String} field
  * @param {Document} doc
  * @param {Object} cache
  * @return {Promise<Document>} doc
  */
 function populateField(field, doc, cache = {}) {
+    const schema = doc.getSchema();
+    const type = doc.resolveFieldByKey(field);
+    const keyPaths = schema.resolveFieldInDoc(field, doc);
 
+    return keyPaths.reduce(function(prev, keyPath) {
+        return prev.then(newDoc => populateKeyPath(newDoc, keyPath, type, cache));
+    }, Promise(doc));
 }
 
 /**

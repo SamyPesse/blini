@@ -1,5 +1,6 @@
 const toFactory = require('to-factory');
-const { Map } = require('immutable');
+const Promise = require('bluebird');
+const { List, Map } = require('immutable');
 
 const Type = require('./types/Type');
 const TypeIterable = require('./types/Iterable');
@@ -94,6 +95,24 @@ class Schema extends Type(DEFAULTS) {
     }
 
     /**
+     * Resolve a field key (ex: "members.user")
+     * into a list of key path "members[0].user".
+     *
+     * @param {String} field
+     * @param {Document} doc
+     * @return {List<KeyPath>} keyPaths
+     */
+
+    resolveFieldInDoc(field, doc) {
+        const parts = field.split(FIELD_SEPARATOR);
+        const keyPaths = [];
+
+        // TODO
+
+        return List(keyPaths);
+    }
+
+    /**
      * Get default values for this schema
      * @return {Object} values
      */
@@ -122,11 +141,25 @@ class Schema extends Type(DEFAULTS) {
     /**
      * Validate a document aginst this schema.
      * @param {Document} doc
+     * @param {String} base
      * @return {Promise<Document>}
      */
 
-    validate() {
-        
+    validate(inputDoc, base = '') {
+        const { fields } = this;
+
+        return Promise.reduce(fields, function(doc, type, field) {
+            // Complete name of the field in the schema
+            const fieldName = base? [base, field].join(FIELD_SEPARATOR) : field;
+
+            // Current value
+            const value = doc.get(field);
+
+            // Normalize or reject
+            const newValue = type.validate(value, fieldName);
+
+            return doc.set(field, newValue);
+        }, inputDoc);
     }
 }
 
