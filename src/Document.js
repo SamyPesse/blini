@@ -1,5 +1,7 @@
+const is = require('is');
 const Promise = require('q');
 const Immutable = require('immutable');
+const { List, Map } = Immutable;
 
 const DEFAULTS = {
     // Previous version of the document remotly
@@ -74,6 +76,26 @@ const Document = {
         return this.constructor.remove({
             _id: this._id
         });
+    },
+
+    /**
+     * Populate a document reference
+     * @param {String|Map<String:Object>|List<String>} field
+     * @return {Promise<Document>}
+     */
+
+    populate(fields) {
+        if (List.isList(fields) || is.array(fields)) {
+            fields = fields.map(field => [field, field]);
+        }
+        else if (is.string(fields)) {
+            fields = { [fields]: {} };
+        }
+
+        fields =  new Map(fields);
+
+        // TODO
+        return Promise(this);
     },
 
     /**

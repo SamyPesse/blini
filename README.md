@@ -40,7 +40,7 @@ post.addView('127.0.0.1').save()
 
 First of all, this library is a Work-In-Progress and Proof-Of-Concept.
 
-Before creating Blini, I've used a lot [Mongoose](http://mongoosejs.com) for production applications, Blini borrowed a few concepts from it.
+Before creating Blini, I've used a lot [Mongoose](http://mongoosejs.com) for production applications, Blini borrowed a few concepts from it (Checkout the full list of [differences](docs/from-mongoose.md)).
 
 ## Principles
 
@@ -69,6 +69,7 @@ If you're using Blini for the first time, check out the [Getting Started](docs/g
     - [Types](docs/reference/types.md)
     - [Validations](docs/reference/validations.md)
     - [Document](docs/reference/document.md)
+- [**Differences with Mongoose**](docs/from-mongoose.md)
 
 ## Contributing!
 

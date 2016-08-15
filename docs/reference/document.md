@@ -9,6 +9,7 @@ Document instance are created from a model.
     - [`save`](#save)
     - [`remove`](#remove)
     - [`validate`](#validate)
+    - [`populate`](#populate)
 - [Static Methods](#static-methods)
     - [`find`](#find)
     - [`count`](#count)
@@ -52,6 +53,11 @@ Removes this document from the database.
 `validate() => Promise<Document>`
 
 Validate the document values, it returns the new document with validated values or a rejected promise.
+
+### `populate`
+`populate(fields: String|Map<String, Options>|List<String>) => Promise<Document>`
+
+Populates document references.
 
 ## Static Methods
 
