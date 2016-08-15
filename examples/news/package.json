@@ -1,0 +1,23 @@
+{
+  "name": "blini-example-news",
+  "version": "0.0.0",
+  "description": "Example application for Blini",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "keywords": [
+    "blini"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "blini": "0.0.0",
+    "bluebird": "^3.4.1",
+    "express": "^4.14.0",
+    "express-session": "^1.14.0",
+    "is-url": "^1.2.2",
+    "pug": "^2.0.0-beta5"
+  }
+}
