@@ -5,7 +5,6 @@ module.exports = {
     String:   TypeNative(String),
     Number:   TypeNative(Number),
     Date:     TypeNative(Date),
-    Mixed:    TypeNative(x => x),
 
     // Iterable types
     List:     require('./List'),
@@ -15,4 +14,5 @@ module.exports = {
     // Other types
     ObjectID: require('./ObjectID'),
     Ref:      require('./Ref'),
+    Mixed:    require('./Mixed')
 };

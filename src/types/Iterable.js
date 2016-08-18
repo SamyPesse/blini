@@ -1,5 +1,6 @@
 const Promise = require('bluebird');
 const Type = require('./Type');
+const MixedType = require('./Mixed');
 
 const DEFAULTS = {
     Iterable:  null,
@@ -7,7 +8,7 @@ const DEFAULTS = {
 };
 
 class TypeIterable extends Type(DEFAULTS) {
-    constructor(Iterable, valueType, props) {
+    constructor(Iterable, valueType = MixedType(), props = {}) {
         super({
             Iterable,
             valueType,
