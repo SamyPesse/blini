@@ -4,6 +4,8 @@ Document instance are created from a model.
 
 - [Methods](#methods)
     - [`isClean`](#isclean)
+    - [`isSaved`](#issaved)
+    - [`isPopulated`](#ispopulated)
     - [`set`](#set)
     - [`merge`](#merge)
     - [`save`](#save)
@@ -28,6 +30,11 @@ If the document is new, `isClean` will return `false`.
 `isSaved() => Boolean`
 
 Return `true` is the document is already saved in the database.
+
+### `isPopulated`
+`isPopulated(field: String) => Boolean`
+
+Return `true` if the field has been populated during a query or using [`.populate`](#populate).
 
 ### `set`
 `set(property: String, value: Mixed) => Document`

@@ -3,9 +3,13 @@ const Promise = require('bluebird');
 const Immutable = require('immutable');
 const { List, Map } = Immutable;
 
+const populate = require('./Query/populate');
+
 const DEFAULTS = {
     // Previous version of the document remotly
-    __prevRevision: null
+    __prevRevision: null,
+    // Map of populated fields (path -> Ref)
+    __populated: Map()
 };
 
 const Document = {
@@ -84,12 +88,13 @@ const Document = {
     },
 
     /**
-     * Populate a document reference
+     * Populate a document reference.
      * @param {String|Map<String:Object>|List<String>} field
+     * @param {Object} cache?
      * @return {Promise<Document>}
      */
 
-    populate(fields) {
+    populate(fields, cache) {
         if (List.isList(fields) || is.array(fields)) {
             fields = fields.map(field => [field, field]);
         }
@@ -99,8 +104,10 @@ const Document = {
 
         fields =  new Map(fields);
 
-        // TODO
-        return Promise(this);
+        return populate(fields, [this], cache)
+        .then(function(docs) {
+            return docs.get(0);
+        });
     },
 
     /**
@@ -124,7 +131,7 @@ const Document = {
     },
 
     /**
-     * Test whaever the document is clean (nothing to save)
+     * Test whatever the document is clean (nothing to save)
      * @return {Boolean} clean
      */
 
@@ -143,6 +150,28 @@ const Document = {
             savedRevision.remove('__prevRevision'),
             this.remove('__prevRevision')
         );
+    },
+
+    /**
+     * Test whatever a field has been populated
+     * @param {String} field
+     * @return {Boolean} populated
+     */
+
+    isPopulated(field) {
+        return Boolean(this.getPopulatedRef(field));
+    },
+
+    /**
+     * Return the value of the reference that has been populated for field "field"
+     * @param {String} field
+     * @return {Ref} ref
+     */
+
+    getPopulatedRef(field) {
+        const { __populated } = this;
+        // TODO: handle deep population
+        return __populated.get(field);
     },
 
     /**
