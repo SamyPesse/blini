@@ -57,14 +57,12 @@ function populateField(field, doc, cache = {}) {
  * @return {Promise<List<Document>>}
  */
 function populateFieldForDocs(field, docs, cache = {}) {
-    return docs.reduce(function(prev, doc) {
-        return prev.then(function(accu) {
-            return populateField(field, cache, doc)
-            .then(function(newDoc) {
-                return accu.concat([newDoc]);
-            });
+    return Promise.reduce(docs, function(accu, doc) {
+        return populateField(field, cache, doc)
+        .then(function(newDoc) {
+            return accu.concat([newDoc]);
         });
-    }, Promise([]))
+    }, [])
     .then(List);
 }
 
@@ -78,9 +76,9 @@ function populateFieldForDocs(field, docs, cache = {}) {
  * @return {Promise<List>} docs
  */
 function populate(fields, docs, cache = {}) {
-    return fields.reduce(function(prev, field) {
-        return populateFieldForDocs(field, cache, docs);
-    }, Promise(docs));
+    return Promise.reduce(fields, function(newDocs, field) {
+        return populateFieldForDocs(field, cache, newDocs);
+    }, docs);
 }
 
 module.exports = populate;

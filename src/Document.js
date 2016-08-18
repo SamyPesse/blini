@@ -3,7 +3,7 @@ const Promise = require('bluebird');
 const Immutable = require('immutable');
 const { List, Map } = Immutable;
 
-const populate = require('./Query/populate');
+const populateOne = require('./Query/populateOne');
 
 const DEFAULTS = {
     // Previous version of the document remotly
@@ -104,10 +104,7 @@ const Document = {
 
         fields =  new Map(fields);
 
-        return populate(fields, [this], cache)
-        .then(function(docs) {
-            return docs.get(0);
-        });
+        return populateOne(fields, this, cache);
     },
 
     /**

@@ -3,6 +3,7 @@ const Readable = require('stream').Readable;
 const { Record, List, OrderedMap } = require('immutable');
 
 const populate = require('./populate');
+const populateOne = require('./populateOne');
 const fetch = require('./fetch');
 const isStreamable = require('./isStreamable');
 
@@ -58,7 +59,7 @@ class Query extends Record(DEFAULTS) {
      */
 
     exec() {
-        const { model } = this;
+        const { model, toPopulate } = this;
 
         return this.toMQuery()
             .then(function({query}) {
@@ -70,7 +71,8 @@ class Query extends Record(DEFAULTS) {
                             if (err) {
                                 reject(err);
                             } else {
-                                resolve(model.fromMongo(doc));
+                                doc = model.fromMongo(doc);
+                                resolve(populateOne(toPopulate, doc));
                             }
                         });
 
@@ -89,7 +91,8 @@ class Query extends Record(DEFAULTS) {
                             resolve(accu[0]);
                         }
 
-                        resolve(new List(accu));
+                        let results = new List(accu);
+                        resolve(populate(toPopulate, results));
                     });
                 });
             });
