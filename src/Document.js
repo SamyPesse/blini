@@ -179,6 +179,18 @@ const Document = {
     toMongo() {
         const schema = this.getSchema();
         return schema.toMongo(this);
+    },
+
+    /**
+     * Return the JavaScript representation of this document
+     * @return {Map} json
+     */
+
+    toValues() {
+        return this
+            .toMap()
+            .remove('__prevRevision')
+            .remove('__populated');
     }
 };
 

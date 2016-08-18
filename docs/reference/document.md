@@ -12,6 +12,8 @@ Document instance are created from a model.
     - [`remove`](#remove)
     - [`validate`](#validate)
     - [`populate`](#populate)
+    - [`toMongo`](#tomongo)
+    - [`toValues`](#tovalues)
 - [Static Methods](#static-methods)
     - [`find`](#find)
     - [`count`](#count)
@@ -65,6 +67,16 @@ Validate the document values, it returns the new document with validated values 
 `populate(fields: String|Map<String, Options>|List<String>) => Promise<Document>`
 
 Populates document references.
+
+### `toMongo`
+`toMongo() => Object`
+
+Return the document as a plain JavaScript object, similar to what is being stored on Mongo.
+
+### `toValues`
+`toValues() => Map`
+
+Return all values in this document as an immutable map.
 
 ## Static Methods
 
