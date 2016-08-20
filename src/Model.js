@@ -2,7 +2,7 @@ const { Record } = require('immutable');
 
 const Type = require('./types');
 const Document = require('./Document');
-const DocumentStatics = require('./DocumentStatics');
+const DocumentStatics = require('./Document/statics');
 
 const ModelOptions = Record({
     // Name of the collection

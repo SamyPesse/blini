@@ -1,4 +1,8 @@
 const Promise = require('bluebird');
+const { List } = require('immutable');
+
+const fieldPath = require('./utils/fieldPath');
+const Change = require('../Change');
 const Type = require('./Type');
 const MixedType = require('./Mixed');
 
@@ -59,6 +63,41 @@ class TypeIterable extends Type(DEFAULTS) {
         // Validate the iterable first
         return super.validate(value, fieldName)
         .then(iterable => this.validateEntries(iterable, fieldName));
+    }
+
+    /**
+     * Compare two iterable values to determine a list of changes operations.
+     *
+     * @param {Iterable} initial
+     * @param {Iterable} expected
+     * @param {String} fieldPath
+     * @return {List<Change>} changes
+     */
+
+    compare(initial, expected, base) {
+        const { valueType } = this;
+        let changes = List();
+
+        // Added / Modified entries
+        expected.forEach(function(expectedValue, index) {
+            const field = fieldPath.join(base, index);
+            const initialValue = initial.get(index);
+
+            changes = changes.concat(
+                valueType.compare(initialValue, expectedValue, field)
+            );
+        });
+
+        // Removed entries
+        initial.slice(expected.size).forEach(function(initialValue, index) {
+            const field = fieldPath.join(base, index);
+
+            changes = changes.push(
+                Change.unset(field)
+            );
+        });
+
+        return changes;
     }
 }
 

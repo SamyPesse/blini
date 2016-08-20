@@ -10,6 +10,7 @@ Document instance are created from a model.
     - [`merge`](#merge)
     - [`save`](#save)
     - [`remove`](#remove)
+    - [`compareWith`](#comparewith)
     - [`validate`](#validate)
     - [`populate`](#populate)
     - [`toMongo`](#tomongo)
@@ -57,6 +58,12 @@ Saves this document. it commits the document to the MongoDB collection.
 `remove() => Promise`
 
 Removes this document from the database.
+
+### `compareWith`
+`compareWith(other: Document) => List<Change>`
+
+Compare this document with another one. It returns all changes required to go
+from this document to another one.
 
 ### `validate`
 `validate() => Promise<Document>`

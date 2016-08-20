@@ -2,10 +2,9 @@ const toFactory = require('to-factory');
 const Promise = require('bluebird');
 const { List, Map } = require('immutable');
 
+const fieldPath = require('./utils/fieldPath');
 const Type = require('./types/Type');
 const TypeIterable = require('./types/Iterable');
-
-const FIELD_SEPARATOR = '.';
 
 const DEFAULTS = {
     fields: new Map()
@@ -75,7 +74,7 @@ class Schema extends Type(DEFAULTS) {
      */
 
     resolveFieldByKey(field) {
-        const parts = field.split(FIELD_SEPARATOR);
+        const parts = field.split(fieldPath.SEPARATOR);
 
         return parts.reduce(function(type, part, index) {
             if (!type) {
@@ -104,7 +103,7 @@ class Schema extends Type(DEFAULTS) {
      */
 
     resolveFieldInDoc(field, doc) {
-        const parts = field.split(FIELD_SEPARATOR);
+        // const parts = field.split(FIELD_SEPARATOR);
         const keyPaths = [];
 
         // TODO
@@ -150,7 +149,7 @@ class Schema extends Type(DEFAULTS) {
 
         return Promise.reduce(fields, function(doc, type, field) {
             // Complete name of the field in the schema
-            const fieldName = base? [base, field].join(FIELD_SEPARATOR) : field;
+            const fieldName = fieldPath.join(base, field);
 
             // Current value
             const value = doc.get(field);
@@ -160,6 +159,33 @@ class Schema extends Type(DEFAULTS) {
 
             return doc.set(field, newValue);
         }, inputDoc);
+    }
+
+    /**
+     * Compare two document using the schema and returns a
+     *
+     * @param {Mixed} initial
+     * @param {Mixed} expected
+     * @param {String} base
+     * @return {List<Change>} changes
+     */
+
+    compare(initialDoc, expectedDoc, base = '') {
+        const { fields } = this;
+
+        return fields.reduce(function(changes, type, field) {
+            // Complete name of the field in the schema
+            const fieldName = fieldPath.join(base, field);
+
+            // Get values
+            const initialValue = initialDoc.get(field);
+            const expectedValue = expectedDoc.get(field);
+
+            // List changes for this
+            const fieldChanges = type.compare(initialValue, expectedValue, fieldName);
+
+            return changes.concat(fieldChanges);
+        });
     }
 }
 

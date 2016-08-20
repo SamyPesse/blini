@@ -36,8 +36,10 @@ const DocumentStatics = {
     fromMongo(json) {
         const schema = this.schema;
         const values = schema.toJS(json);
+        const DocModel = this.prototype.constructor;
 
-        return new this.prototype.constructor(values);
+        const doc = new DocModel(values);
+        return doc.set('__prevRevision', doc);
     },
 
     /**

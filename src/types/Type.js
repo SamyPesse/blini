@@ -1,5 +1,8 @@
 const Promise = require('bluebird');
-const { List, Record } = require('immutable');
+const Immutable = require('immutable');
+const { List, Record } = Immutable;
+
+const Change = require('../Change');
 
 const DEFAULTS = {
     // List of validation functions
@@ -34,16 +37,36 @@ const BaseType = (defaultValues = {}) => class extends Record({ ...DEFAULTS, ...
     /**
      * Validate a value using the type's validations
      * @param {Mixed} initialValue
-     * @param {String} fieldName
+     * @param {String} fieldPath
      * @return {Promise<Mixed>} newValue
      */
 
-    validate(initialValue, fieldName) {
+    validate(initialValue, fieldPath) {
         const { validations } = this;
 
         return Promise.reduce(validations, function(value, fn) {
-            return fn(value, fieldName);
+            return fn(value, fieldPath);
         }, initialValue);
+    }
+
+    /**
+     * Compare two values of this type to determine a change operation.
+     * The basic implementation replace the whole field if different.
+     *
+     * @param {Mixed} initial
+     * @param {Mixed} expected
+     * @param {String} fieldPath
+     * @return {List<Change>} changes
+     */
+
+    compare(initial, expected, fieldPath) {
+        if (Immutable.is(initial, expected)) {
+            return List();
+        }
+
+        return List([
+            Change.set(fieldPath, this.toMongo(expected))
+        ]);
     }
 };
 

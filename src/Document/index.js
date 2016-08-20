@@ -3,7 +3,12 @@ const Promise = require('bluebird');
 const Immutable = require('immutable');
 const { List, Map } = Immutable;
 
-const populateOne = require('./Query/populateOne');
+const populateOne = require('../Query/populateOne');
+const Change = require('../Change');
+
+// Field used to store version
+// http://aaronheckmann.tumblr.com/post/48943525537/mongoose-v3-part-1-versioning
+const VERSION_FIELD = '__v';
 
 const DEFAULTS = {
     // Previous version of the document remotly
@@ -11,6 +16,7 @@ const DEFAULTS = {
     // Map of populated fields (path -> Ref)
     __populated: Map()
 };
+DEFAULTS[VERSION_FIELD] = 0;
 
 const Document = {
     DEFAULTS,
@@ -58,9 +64,55 @@ const Document = {
      */
 
     save() {
+        const DocumentModel = this.constructor;
         const doc = this;
+        const prev = doc.__prevRevision || new DocumentModel();
+
+        if (!this.isSaved()) {
+            return this.saveAndReplace();
+        }
+
+        // Compare with remote version
+        let changes = doc.compareWith(prev);
+        if (changes.size === 0) {
+            return Promise.resolve(doc);
+        }
+
+        // Convert the changes list into a MongoDB query
+        const mongoFilter = { __id: this.id };
+
+        // Detect array operations and update the internal versioning
+        const hasArrayChanges = changes.find(change => change.isInArray());
+        if (hasArrayChanges) {
+            mongoFilter[VERSION_FIELD] = this.__v;
+            changes = changes.push(Change.set(VERSION_FIELD, this.__v + 1));
+        }
+
+        // Convert the changes list into a MongoDB query
+        const mongoOp = Change.toMongo(changes);
 
         return this.constructor.getCollection()
+        .then(function(col) {
+            return new Promise(function(resolve, reject) {
+                col.update(mongoFilter, mongoOp, function(err) {
+                    if (err) reject(err);
+                    else resolve();
+                });
+            });
+        })
+        .then(function() {
+            return doc.cleanup();
+        });
+    },
+
+    /**
+     * Save this document by replacing it completly
+     */
+    saveAndReplace() {
+        const doc = this;
+        const DocModel = this.constructor;
+
+        return DocModel.getCollection()
         .then(function(col) {
             const json = doc.toMongo();
 
@@ -191,6 +243,18 @@ const Document = {
             .toMap()
             .remove('__prevRevision')
             .remove('__populated');
+    },
+
+    /**
+     * Compare this document with another document.
+     * It returns all changes required to go from this document to the other one.
+     * @param {Document} other
+     * @return {List<Change>}
+     */
+
+    compareWith(other) {
+        const schema = this.getSchema();
+        return schema.compare(this, other);
     }
 };
 
