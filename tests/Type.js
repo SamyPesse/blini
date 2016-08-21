@@ -1,5 +1,5 @@
 const Promise = require('q');
-const { List } = require('immutable');
+const { List, Map } = require('immutable');
 const expect = require('expect');
 
 const { Type, Validation } = require('../src');
@@ -117,6 +117,85 @@ describe('Type', function() {
 
                 expect(changes.size).toBe(1);
                 expect(changes.get(0).path).toBe('someList.2');
+                expect(changes.get(0).type).toBe('$unset');
+            });
+
+        });
+
+    });
+
+    describe('Map', function() {
+
+        describe('.validate', function() {
+            const whole = Type.Map(Type.Mixed(), {
+                validations: [
+                    function(value) {
+                        if (value.size > 1) throw 'error';
+                        else return value;
+                    }
+                ]
+            });
+
+            const withType = Type.Map(
+                Type.Number({
+                    validations: [
+                        function(value) {
+                            if (value > 2) throw 'error';
+                            else return value;
+                        }
+                    ]
+                })
+            );
+
+            it('should validate the whole map (1)', function() {
+                return whole.validate(Map({a: 1, b: 2}))
+                    .then(function(result) {
+                        throw new Error('It should have failed');
+                    }, function() {
+                        return Promise();
+                    });
+            });
+
+            it('should validate the whole map (2)', function() {
+                return whole.validate(Map({ a : 1 }));
+            });
+
+            it('should validate inner elements (1)', function() {
+                return withType.validate(Map({ a: 1, b: 2, c: 0, d: 1, e: 2 }));
+            });
+        });
+
+        describe('.compare', function() {
+
+            it('should return empty changes for same list', function() {
+                const a = Map({a : 1, b: 4});
+                const b = Map({a : 1, b: 4});
+                const type = Type.Map();
+                const changes = type.compare(a, b, 'someMap');
+
+                expect(changes.size).toBe(0);
+            });
+
+            it('should return $set changes for modifications', function() {
+                const a = Map({a : 1, b: 4});
+                const b = Map({a : 1, b: 3});
+                const type = Type.Map();
+                const changes = type.compare(a, b, 'someMap');
+
+                expect(changes.size).toBe(1);
+                expect(changes.get(0).path).toBe('someMap.b');
+                expect(changes.get(0).type).toBe('$set');
+                expect(changes.get(0).value).toBe(3);
+            });
+
+            it('should return $unset changes for removed items', function() {
+                const a = Map({a : 1, b: 4, c: 5});
+                const b = Map({a : 1, b: 4});
+                const type = Type.Map();
+                const changes = type.compare(a, b, 'someMap');
+
+                expect(changes.size).toBe(1);
+                expect(changes.get(0).path).toBe('someMap.c');
                 expect(changes.get(0).type).toBe('$unset');
             });
 
