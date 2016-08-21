@@ -86,6 +86,42 @@ describe('Type', function() {
 
         });
 
+        describe('.compare', function() {
+
+            it('should return empty changes for same list', function() {
+                const a = List([1, 4]);
+                const b = List([1, 4]);
+                const type = Type.List();
+                const changes = type.compare(a, b, 'someList');
+
+                expect(changes.size).toBe(0);
+            });
+
+            it('should return $set changes for modifications', function() {
+                const a = List([1, 4]);
+                const b = List([1, 3]);
+                const type = Type.List();
+                const changes = type.compare(a, b, 'someList');
+
+                expect(changes.size).toBe(1);
+                expect(changes.get(0).path).toBe('someList.1');
+                expect(changes.get(0).type).toBe('$set');
+                expect(changes.get(0).value).toBe(3);
+            });
+
+            it('should return $unset changes for removed items', function() {
+                const a = List([1, 4, 2]);
+                const b = List([1, 4]);
+                const type = Type.List();
+                const changes = type.compare(a, b, 'someList');
+
+                expect(changes.size).toBe(1);
+                expect(changes.get(0).path).toBe('someList.2');
+                expect(changes.get(0).type).toBe('$unset');
+            });
+
+        });
+
     });
 
 });

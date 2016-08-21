@@ -1,7 +1,7 @@
 const Promise = require('bluebird');
 const { List } = require('immutable');
 
-const fieldPath = require('./utils/fieldPath');
+const fieldPath = require('../utils/fieldPath');
 const Change = require('../Change');
 const Type = require('./Type');
 const MixedType = require('./Mixed');
@@ -90,7 +90,7 @@ class TypeIterable extends Type(DEFAULTS) {
 
         // Removed entries
         initial.slice(expected.size).forEach(function(initialValue, index) {
-            const field = fieldPath.join(base, index);
+            const field = fieldPath.join(base, expected.size + index);
 
             changes = changes.push(
                 Change.unset(field)

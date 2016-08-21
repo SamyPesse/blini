@@ -1,4 +1,4 @@
-const Query = require('./Query');
+const Query = require('../Query');
 
 /**
  * Static methods for the document models.
