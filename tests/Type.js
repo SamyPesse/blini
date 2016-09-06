@@ -41,7 +41,7 @@ describe('Type', function() {
             const whole = Type.List(Type.Mixed(), {
                 validations: [
                     function(value) {
-                        if (value.size > 1) throw 'error';
+                        if (value.size > 1) throw new Error('error');
                         else return value;
                     }
                 ]
@@ -51,7 +51,7 @@ describe('Type', function() {
                 Type.Number({
                     validations: [
                         function(value) {
-                            if (value > 2) throw 'error';
+                            if (value > 2) throw new Error('error');
                             else return value;
                         }
                     ]
@@ -130,7 +130,7 @@ describe('Type', function() {
             const whole = Type.Map(Type.Mixed(), {
                 validations: [
                     function(value) {
-                        if (value.size > 1) throw 'error';
+                        if (value.size > 1) throw new Error('error');
                         else return value;
                     }
                 ]
@@ -140,7 +140,7 @@ describe('Type', function() {
                 Type.Number({
                     validations: [
                         function(value) {
-                            if (value > 2) throw 'error';
+                            if (value > 2) throw new Error('error');
                             else return value;
                         }
                     ]
@@ -157,7 +157,7 @@ describe('Type', function() {
             });
 
             it('should validate the whole map (2)', function() {
-                return whole.validate(Map({ a : 1 }));
+                return whole.validate(Map({ a: 1 }));
             });
 
             it('should validate inner elements (1)', function() {
@@ -168,8 +168,8 @@ describe('Type', function() {
         describe('.compare', function() {
 
             it('should return empty changes for same list', function() {
-                const a = Map({a : 1, b: 4});
-                const b = Map({a : 1, b: 4});
+                const a = Map({a: 1, b: 4});
+                const b = Map({a: 1, b: 4});
                 const type = Type.Map();
                 const changes = type.compare(a, b, 'someMap');
 
@@ -177,8 +177,8 @@ describe('Type', function() {
             });
 
             it('should return $set changes for modifications', function() {
-                const a = Map({a : 1, b: 4});
-                const b = Map({a : 1, b: 3});
+                const a = Map({a: 1, b: 4});
+                const b = Map({a: 1, b: 3});
                 const type = Type.Map();
                 const changes = type.compare(a, b, 'someMap');
 
@@ -189,8 +189,8 @@ describe('Type', function() {
             });
 
             it('should return $unset changes for removed items', function() {
-                const a = Map({a : 1, b: 4, c: 5});
-                const b = Map({a : 1, b: 4});
+                const a = Map({a: 1, b: 4, c: 5});
+                const b = Map({a: 1, b: 4});
                 const type = Type.Map();
                 const changes = type.compare(a, b, 'someMap');
 

@@ -1,7 +1,7 @@
-const map = require('map-stream');
+const mapStream = require('map-stream');
 
 /**
- * Fetch documents for a mquery as a stream.
+ * Fetch all document results for a mquery, and returns a stream of it.
  *
  * @param {Model} model
  * @param {MQuery} query
@@ -9,7 +9,7 @@ const map = require('map-stream');
  */
 function fetch(model, query) {
     return query.stream().pipe(
-        map(function(doc, callback) {
+        mapStream(function(doc, callback) {
             callback(null, model.fromMongo(doc));
         })
     );

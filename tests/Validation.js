@@ -6,7 +6,7 @@ describe('Validation', function() {
         const validate = Validation.minLength(10, 'err message');
 
         it('should throw if length is inferior', function() {
-            expect(function () {
+            expect(function() {
                 validate('Hello');
             }).toThrow('err message');
         });
@@ -20,7 +20,7 @@ describe('Validation', function() {
         const validate = Validation.maxLength(10, 'err message');
 
         it('should throw if length is superior', function() {
-            expect(function () {
+            expect(function() {
                 validate('Hello World !!');
             }).toThrow('err message');
         });
@@ -46,7 +46,7 @@ describe('Validation', function() {
         const validate = Validation.required('err message');
 
         it('should throw if value is undefined', function() {
-            expect(function () {
+            expect(function() {
                 validate(undefined);
             }).toThrow('err message');
         });
