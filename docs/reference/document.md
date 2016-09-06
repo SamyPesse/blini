@@ -65,6 +65,8 @@ Removes this document from the database.
 Compare this document with another one. It returns all changes required to go
 from this document to another one.
 
+See [Changes](./changes.md) for details.
+
 ### `validate`
 `validate() => Promise<Document>`
 
