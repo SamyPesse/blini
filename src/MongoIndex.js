@@ -31,7 +31,7 @@ class Index extends Record(DEFAULTS) {
         return Promise.nfcall(
             collection.createIndex.bind(collection),
             {
-                [field]: this.ascending? 1 : -1
+                [field]: this.ascending ? 1 : -1
             },
             options
         );

@@ -90,7 +90,7 @@ class TypeIterable extends Type(DEFAULTS) {
 
         // Removed entries
         initial.slice(expected.size).forEach(function(initialValue, index) {
-            const name = typeof index === 'number'? (expected.size + index) : index;
+            const name = typeof index === 'number' ? (expected.size + index) : index;
             const field = fieldPath.join(base, name);
 
             changes = changes.push(

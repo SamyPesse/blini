@@ -64,7 +64,7 @@ class Query extends Record(DEFAULTS) {
         return this.toMQuery()
             .then(function({query}) {
                 return new Promise(function(resolve, reject) {
-                    let accu = [];
+                    const accu = [];
 
                     if (!isStreamable(query)) {
                         query.exec(function(err, doc) {
@@ -91,7 +91,7 @@ class Query extends Record(DEFAULTS) {
                             resolve(accu[0]);
                         }
 
-                        let results = new List(accu);
+                        const results = new List(accu);
                         resolve(populate(toPopulate, results));
                     });
                 });
@@ -136,8 +136,8 @@ class Query extends Record(DEFAULTS) {
         return model.getCollection()
             .then(function(collection) {
                 const query = operations
-                    .reduce(function(query, {method,args}) {
-                        return query[method].apply(query, args);
+                    .reduce(function(q, {method, args}) {
+                        return q[method](...args);
                     }, mquery(collection));
 
                 return { query };

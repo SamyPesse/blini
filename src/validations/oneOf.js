@@ -1,7 +1,7 @@
 
 /**
  * Enforce that the value is a constant.
- * 
+ *
  * @param {Array<Mixed>} constants
  * @param {String} message
  * @return {Validation}

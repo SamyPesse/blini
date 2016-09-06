@@ -24,7 +24,7 @@ class Schema extends Type(DEFAULTS) {
 
         return fields
             .map(function(type, key) {
-                let value = doc.get(key);
+                const value = doc.get(key);
                 return type.toMongo(value);
             })
             .toJS();
@@ -35,7 +35,7 @@ class Schema extends Type(DEFAULTS) {
 
         return fields
             .map(function(type, key) {
-                let value = json[key];
+                const value = json[key];
                 return type.toJS(value);
             })
             .toJS();

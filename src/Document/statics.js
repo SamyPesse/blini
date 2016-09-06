@@ -5,6 +5,7 @@ const Query = require('../Query');
  */
 
 const DocumentStatics = {
+
     /**
      * Get an interface to work with the collection.
      * @return {Promise<MongoDB.Collection>} collection

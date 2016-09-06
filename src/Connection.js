@@ -18,8 +18,8 @@ class Connection {
      */
 
     ensure() {
-        let that = this;
-        let { infos } = this;
+        const that = this;
+        const { infos } = this;
 
         if (!this._connection) {
             this._connection = new Promise(function(resolve, reject) {
@@ -60,11 +60,11 @@ class Connection {
      */
 
     getCollection(collection) {
-        let that = this;
+        const that = this;
 
         return this.ensure()
         .then(function() {
-            let { db } = that;
+            const { db } = that;
             return db.collection(collection);
         });
     }

@@ -1,7 +1,7 @@
 
 /**
  * Enforce that the value match a RegExp.
- * 
+ *
  * @param {RegExp} re
  * @param {String} message
  * @return {Function}

@@ -7,7 +7,7 @@ const FIELD_SEPARATOR = '.';
  * @return {String}
  */
 function joinFields(base, field) {
-    return base? [base, field].join(FIELD_SEPARATOR) : field;
+    return base ? [base, field].join(FIELD_SEPARATOR) : field;
 }
 
 module.exports = {

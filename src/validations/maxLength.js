@@ -1,7 +1,7 @@
 
 /**
  * Enforce that the value has a length inferior to "max".
- * 
+ *
  * @param {Number} max
  * @param {String} message
  * @return {Function}

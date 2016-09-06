@@ -2,7 +2,7 @@ const is = require('is');
 
 /**
  * Default the value if non existant.
- * 
+ *
  * @param {Mixed} defaultValue
  * @return {Function}
  */

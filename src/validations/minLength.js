@@ -1,7 +1,7 @@
 
 /**
  * Enforce that the value has a length superior to "min".
- * 
+ *
  * @param {Number} min
  * @param {String} message
  * @return {Function}
