@@ -43,7 +43,6 @@ class Change extends Record(DEFAULTS) {
     /**
      * Create a change of type SET
      * @param {String} path
-     * @param {Mixed} value
      * @return {Change}
      */
 
@@ -66,8 +65,8 @@ class Change extends Record(DEFAULTS) {
             .groupBy(function(change) {
                 return change.type;
             })
-            .map(function(changes) {
-                return changes
+            .map(function(group) {
+                return group
                     .map(change => [change.path, change.value])
                     .toMap();
             })
@@ -77,3 +76,4 @@ class Change extends Record(DEFAULTS) {
 }
 
 module.exports = Change;
+module.exports.TYPES = TYPES;

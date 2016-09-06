@@ -1,3 +1,4 @@
+const is = require('is');
 const Promise = require('bluebird');
 const Immutable = require('immutable');
 const { List, Record } = Immutable;
@@ -62,6 +63,12 @@ const BaseType = (defaultValues = {}) => class extends Record({ ...DEFAULTS, ...
     compare(initial, expected, fieldPath) {
         if (Immutable.is(initial, expected)) {
             return List();
+        }
+
+        if (!is.defined(expected)) {
+            return List([
+                Change.unset(fieldPath)
+            ]);
         }
 
         return List([

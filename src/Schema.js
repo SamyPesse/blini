@@ -162,7 +162,8 @@ class Schema extends Type(DEFAULTS) {
     }
 
     /**
-     * Compare two document using the schema and returns a
+     * Compare two document using the schema and returns
+     * a list of all changes.
      *
      * @param {Mixed} initial
      * @param {Mixed} expected
@@ -173,7 +174,8 @@ class Schema extends Type(DEFAULTS) {
     compare(initialDoc, expectedDoc, base = '') {
         const { fields } = this;
 
-        return fields.reduce(function(changes, type, field) {
+        return fields
+        .reduce(function(changes, type, field) {
             // Complete name of the field in the schema
             const fieldName = fieldPath.join(base, field);
 
@@ -185,7 +187,7 @@ class Schema extends Type(DEFAULTS) {
             const fieldChanges = type.compare(initialValue, expectedValue, fieldName);
 
             return changes.concat(fieldChanges);
-        });
+        }, List());
     }
 }
 

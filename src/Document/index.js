@@ -250,6 +250,7 @@ const Document = {
     /**
      * Compare this document with another document.
      * It returns all changes required to go from this document to the other one.
+     *
      * @param {Document} other
      * @return {List<Change>}
      */
