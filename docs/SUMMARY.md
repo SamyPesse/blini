@@ -2,20 +2,20 @@
 
 ## Guides
 
-- [Create a schema](./create-schema.md)
 - [Getting started](./getting-started.md)
+- [Create a schema](./create-schema.md)
 - [Populating references](./populating.md)
 - [Querying](./querying.md)
 - [Discriminators](./discriminators.md)
 
 ## References
 
-- [Connection](./references/connection.md)
-- [Document](./references/document.md)
-- [Change](./references/change.md)
-- [Index](./references/index.md)
-- [Validations](./references/validations.md)
-- [Types](./references/types.md)
+- [Connection](./reference/connection.md)
+- [Document](./reference/document.md)
+- [Change](./reference/change.md)
+- [Index](./reference/index.md)
+- [Validations](./reference/validations.md)
+- [Types](./reference/types.md)
 
 ---
 
