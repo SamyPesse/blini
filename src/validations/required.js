@@ -1,3 +1,4 @@
+const { ValidationError } = require('../utils/errors');
 
 /**
  * Enforce that a value is defined
@@ -6,11 +7,13 @@
  */
 
 function required(message) {
-    message = message || 'Field is required';
-
-    return function(value) {
+    return function(value, path) {
         if (typeof value === 'undefined') {
-            throw new Error(message);
+            throw new ValidationError({
+                message: message || `"${path}" is required`,
+                value,
+                path
+            });
         }
 
         return value;

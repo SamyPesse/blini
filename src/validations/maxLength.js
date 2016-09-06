@@ -1,3 +1,4 @@
+const { ValidationError } = require('../utils/errors');
 
 /**
  * Enforce that the value has a length inferior to "max".
@@ -8,11 +9,13 @@
  */
 
 function maxLength(max, message) {
-    message = message || `Value should be less than ${max} characters`;
-
-    return function(value) {
+    return function(value, path) {
         if (value.length > max) {
-            throw new Error(message);
+            throw new ValidationError({
+                message: message || `"${path}" should be less than ${max} characters`,
+                value,
+                path
+            });
         }
 
         return value;

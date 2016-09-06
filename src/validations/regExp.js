@@ -1,3 +1,4 @@
+const { ValidationError } = require('../utils/errors');
 
 /**
  * Enforce that the value match a RegExp.
@@ -8,11 +9,13 @@
  */
 
 function regExp(re, message) {
-    message = message || `Value should match ${re}`;
-
-    return function(value) {
+    return function(value, path) {
         if (re.test(value)) {
-            throw new Error(message);
+            throw new ValidationError({
+                message: message || `${path} should match ${re}`,
+                value,
+                path
+            });
         }
 
         return value;

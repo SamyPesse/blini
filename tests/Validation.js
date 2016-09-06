@@ -5,6 +5,12 @@ describe('Validation', function() {
     describe('.minLength', function() {
         const validate = Validation.minLength(10, 'err message');
 
+        it('should throw a good default message', function() {
+            expect(function() {
+                Validation.minLength(10)('Hello', 'a');
+            }).toThrow('"a" should be longer than 10 characters');
+        });
+
         it('should throw if length is inferior', function() {
             expect(function() {
                 validate('Hello');
@@ -18,6 +24,12 @@ describe('Validation', function() {
 
     describe('.maxLength', function() {
         const validate = Validation.maxLength(10, 'err message');
+
+        it('should throw a good default message', function() {
+            expect(function() {
+                Validation.maxLength(2)('Hello', 'a');
+            }).toThrow('"a" should be less than 2 characters');
+        });
 
         it('should throw if length is superior', function() {
             expect(function() {
@@ -44,6 +56,12 @@ describe('Validation', function() {
 
     describe('.required', function() {
         const validate = Validation.required('err message');
+
+        it('should throw a good default message', function() {
+            expect(function() {
+                Validation.required()(undefined, 'a');
+            }).toThrow('"a" is required');
+        });
 
         it('should throw if value is undefined', function() {
             expect(function() {

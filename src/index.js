@@ -1,5 +1,7 @@
+const { ValidationError } = require('./utils/errors');
 
 module.exports = {
+    ValidationError,
     Connection: require('./Connection'),
     Schema:     require('./Schema'),
     Model:      require('./Model'),

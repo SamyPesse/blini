@@ -1,3 +1,4 @@
+const { ValidationError } = require('../utils/errors');
 
 /**
  * Enforce that the value has a length superior to "min".
@@ -8,11 +9,13 @@
  */
 
 function minLength(min, message) {
-    message = message || `Value should be longer than ${min} characters`;
-
-    return function(value) {
+    return function(value, path) {
         if (value.length < min) {
-            throw new Error(message);
+            throw new ValidationError({
+                message: message || `"${path}" should be longer than ${min} characters`,
+                value,
+                path
+            });
         }
 
         return value;

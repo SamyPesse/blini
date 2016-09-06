@@ -1,3 +1,4 @@
+const { ValidationError } = require('../utils/errors');
 
 /**
  * Enforce that the value is a constant.
@@ -7,11 +8,13 @@
  * @return {Validation}
  */
 function oneOf(constants, message) {
-    message = message || `Value should be one of ${constants.join(', ')}`;
-
-    return function(value) {
+    return function(value, path) {
         if (constants.indexOf(value) < 0) {
-            throw new Error(message);
+            throw new ValidationError({
+                message: message || `${path} should be one of ${constants.join(', ')}`,
+                value,
+                path
+            });
         }
 
         return value;

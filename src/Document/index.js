@@ -50,6 +50,8 @@ const Document = {
 
     /**
      * Validate this document against the schema.
+     * It returns a new document with validated fields, or throw an error.
+     *
      * @return {Promise<Document>}
      */
 
