@@ -6,8 +6,12 @@
     "username": "remove-query-remove",
     "name": "An user to remove"
 }
-
 {
     "username": "remove-doc-remove",
     "name": "An user to remove"
+}
+{
+    "_id": ObjectId("57d084789e411cd5825141ed"),
+    "username": "test-populate",
+    "name": "An user to test populating from posts"
 }

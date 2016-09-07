@@ -3,6 +3,7 @@ const { List } = require('immutable');
 
 const { Change } = require('../src');
 const User = require('./fixtures/user');
+const Post = require('./fixtures/post');
 
 describe('Model', function() {
 
@@ -105,6 +106,23 @@ describe('Model', function() {
             })
             .then(function(user) {
                 expect(user).toBeFalsy();
+            });
+        });
+
+    });
+
+    describe('.populate', function() {
+        it('should populate field if exists', function() {
+            return Post
+            .findOne({
+                id: 1
+            })
+            .exec()
+            .then(post => {
+                return post.populate('user');
+            })
+            .then(post => {
+                console.log(post);
             });
         });
 

@@ -9,7 +9,7 @@ class Connection {
         // Map of collection name -> Model
         this.models = {};
 
-        this.db;
+        this.db = null;
     }
 
     /**
@@ -79,8 +79,8 @@ class Connection {
      */
 
     setupCollectionFor(Model) {
-        const schema = Model.schema;
-        const indexes = schema.getIndexes();
+        // const schema = Model.schema;
+        // const indexes = schema.getIndexes();
 
         // TODO
     }
