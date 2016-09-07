@@ -5,7 +5,7 @@
  * @return {Boolean}
  */
 function isStreamable(query) {
-    return query.op !== 'findOne';
+    return query.op === 'find';
 }
 
 module.exports = isStreamable;

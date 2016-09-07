@@ -136,9 +136,11 @@ const Document = {
      */
 
     remove() {
-        return this.constructor.remove({
-            _id: this._id
-        });
+        return this.constructor
+            .remove({
+                _id: this._id
+            })
+            .exec();
     },
 
     /**
@@ -198,8 +200,8 @@ const Document = {
         }
 
         return Immutable.is(
-            savedRevision.remove('__prevRevision'),
-            this.remove('__prevRevision')
+            savedRevision.delete('__prevRevision'),
+            this.delete('__prevRevision')
         );
     },
 

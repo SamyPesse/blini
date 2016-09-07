@@ -6,6 +6,7 @@ const populate = require('./populate');
 const populateOne = require('./populateOne');
 const fetch = require('./fetch');
 const isStreamable = require('./isStreamable');
+const hasResults = require('./hasResults');
 
 const DEFAULTS = {
     // Model related to this query
@@ -71,8 +72,15 @@ class Query extends Record(DEFAULTS) {
                             if (err) {
                                 reject(err);
                             } else {
-                                doc = model.fromMongo(doc);
-                                resolve(populateOne(toPopulate, doc));
+                                if (hasResults(query)) {
+                                    doc = doc ? populateOne(
+                                        toPopulate,
+                                        model.fromMongo(doc)
+                                    ) : null;
+                                    resolve(doc);
+                                } else {
+                                    resolve();
+                                }
                             }
                         });
 

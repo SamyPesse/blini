@@ -12,7 +12,7 @@ describe('Query', function() {
                 .find().exec()
                 .then(function(result) {
                     expect(result).toBeA(List);
-                    expect(result.size).toBe(1);
+                    expect(result.size).toBe(2);
                 });
         });
     });

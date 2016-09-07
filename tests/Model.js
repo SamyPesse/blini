@@ -17,6 +17,17 @@ describe('Model', function() {
             expect(user.isClean()).toBeFalsy();
         });
 
+        it('should return true for fetched document', function() {
+            return User
+            .findOne({
+                username: 'johndoe'
+            })
+            .exec()
+            .then(function(user) {
+                expect(user.isClean()).toBeTruthy();
+            });
+        });
+
     });
 
     describe('.save', function() {
@@ -76,25 +87,29 @@ describe('Model', function() {
 
     });
 
-    /* describe('.remove', function() {
+    describe('.remove', function() {
 
         it('should remove the document from the database', function() {
-            return User.findOne({
-                username: 'Test'
+            return User
+            .findOne({
+                username: 'remove1'
             })
+            .exec()
             .then(function(user) {
                 return user.remove();
             })
             .then(function() {
-                return User.findOne({
-                    username: 'Test'
-                });
+                return User
+                .findOne({
+                    username: 'remove1'
+                })
+                .exec();
             })
             .then(function(user) {
                 expect(user).toBeFalsy();
             });
         });
 
-    });*/
+    });
 
 });
