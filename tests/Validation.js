@@ -73,4 +73,32 @@ describe('Validation', function() {
             expect(validate(null)).toBe(null);
         });
     });
+
+    describe('.oneOf', function() {
+        const validate = Validation.oneOf([1, 2, 3], 'err message');
+
+        it('should throw a good default message', function() {
+            expect(function() {
+                Validation.oneOf([1,2])(3, 'a');
+            }).toThrow('"a" should be one of 1, 2');
+        });
+
+        it('should throw if value is undefined', function() {
+            expect(function() {
+                validate(undefined);
+            }).toThrow('err message');
+        });
+
+        it('should throw if value is not present in the list', function() {
+            expect(function() {
+                validate(4);
+            }).toThrow('err message');
+        });
+
+        it('should pass if value is in the list', function() {
+            expect(validate(1)).toBe(1);
+            expect(validate(2)).toBe(2);
+            expect(validate(3)).toBe(3);
+        });
+    });
 });

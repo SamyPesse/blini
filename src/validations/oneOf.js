@@ -11,7 +11,7 @@ function oneOf(constants, message) {
     return function(value, path) {
         if (constants.indexOf(value) < 0) {
             throw new ValidationError({
-                message: message || `${path} should be one of ${constants.join(', ')}`,
+                message: message || `"${path}" should be one of ${constants.join(', ')}`,
                 value,
                 path
             });
