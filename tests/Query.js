@@ -26,6 +26,14 @@ describe('Query', function() {
                     expect(user.username).toBe('johndoe');
                 });
         });
+
+        it('should return "null" if not found', function() {
+            return (new Query(User))
+                .findOne({ username: 'doesntexist' }).exec()
+                .then(function(user) {
+                    expect(user).toBeFalsy();
+                });
+        });
     });
 
 });
