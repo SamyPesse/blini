@@ -101,4 +101,24 @@ describe('Validation', function() {
             expect(validate(3)).toBe(3);
         });
     });
+
+    describe('.regExp', function() {
+        const validate = Validation.regExp(/^hello([a-z ]+)world$/, 'err message');
+
+        it('should throw a good default message', function() {
+            expect(function() {
+                Validation.regExp(/^hello/)('world', 'a');
+            }).toThrow('"a" should match /^hello/');
+        });
+
+        it('should throw if value does not match', function() {
+            expect(function() {
+                validate('helloworld');
+            }).toThrow('err message');
+        });
+
+        it('should pass if value matches', function() {
+            expect(validate('hello world')).toBe('hello world');
+        });
+    });
 });

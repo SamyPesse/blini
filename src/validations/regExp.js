@@ -10,9 +10,9 @@ const { ValidationError } = require('../utils/errors');
 
 function regExp(re, message) {
     return function(value, path) {
-        if (re.test(value)) {
+        if (!re.test(value)) {
             throw new ValidationError({
-                message: message || `${path} should match ${re}`,
+                message: message || `"${path}" should match ${re}`,
                 value,
                 path
             });
