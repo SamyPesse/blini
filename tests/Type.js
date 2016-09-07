@@ -57,6 +57,28 @@ describe('Type', function() {
 
     });
 
+    describe('Number', function() {
+
+        describe('toMongo', function() {
+
+            it('should cast value as a number', function() {
+                const type = Type.Number();
+                return expect(type.toMongo('14')).toBe(14);
+            });
+
+        });
+
+        describe('toJS', function() {
+
+            it('should cast value as a number', function() {
+                const type = Type.Number();
+                return expect(type.toMongo('15')).toBe(15);
+            });
+
+        });
+
+    });
+
     describe('.List', function() {
 
         describe('.validate', function() {
