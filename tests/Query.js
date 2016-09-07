@@ -12,7 +12,7 @@ describe('Query', function() {
                 .find().exec()
                 .then(function(result) {
                     expect(result).toBeA(List);
-                    expect(result.size).toBe(2);
+                    expect(result.size).toBe(3);
                 });
         });
     });
@@ -32,6 +32,26 @@ describe('Query', function() {
                 .findOne({ username: 'doesntexist' }).exec()
                 .then(function(user) {
                     expect(user).toBeFalsy();
+                });
+        });
+    });
+
+    describe('.remove()', function() {
+        it('should return result from mongo', function() {
+            return (new Query(User))
+                .remove({ username: 'remove-query-remove' }).exec()
+                .then(function(result) {
+                    expect(result.n).toBe(1);
+                    expect(result.ok).toBe(1);
+                });
+        });
+
+        it('should not fail if document does not exist', function() {
+            return (new Query(User))
+                .remove({ username: 'doesntexist' }).exec()
+                .then(function(result) {
+                    expect(result.n).toBe(0);
+                    expect(result.ok).toBe(1);
                 });
         });
     });

@@ -3,6 +3,11 @@
     "name": "John"
 }
 {
-    "username": "remove1",
+    "username": "remove-query-remove",
+    "name": "An user to remove"
+}
+
+{
+    "username": "remove-doc-remove",
     "name": "An user to remove"
 }

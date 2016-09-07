@@ -90,19 +90,17 @@ describe('Model', function() {
     describe('.remove', function() {
 
         it('should remove the document from the database', function() {
+            const username = 'remove-doc-remove';
+
             return User
-            .findOne({
-                username: 'remove1'
-            })
+            .findOne({ username })
             .exec()
             .then(function(user) {
                 return user.remove();
             })
             .then(function() {
                 return User
-                .findOne({
-                    username: 'remove1'
-                })
+                .findOne({ username })
                 .exec();
             })
             .then(function(user) {

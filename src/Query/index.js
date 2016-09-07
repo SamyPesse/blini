@@ -79,7 +79,7 @@ class Query extends Record(DEFAULTS) {
                                     ) : null;
                                     resolve(doc);
                                 } else {
-                                    resolve();
+                                    resolve(doc.result);
                                 }
                             }
                         });
