@@ -77,6 +77,8 @@ Validate the document values, it returns the new document with validated values 
 
 Populates document references.
 
+See [Populating references](../populating.md) for details.
+
 ### `toMongo`
 `toMongo() => Object`
 
