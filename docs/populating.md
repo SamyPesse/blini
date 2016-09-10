@@ -54,9 +54,9 @@ If the document has already been queried, we can populate a field:
 
 ```js
 comment.populate('post')
-    .then(function(newComment) {
-        // newComment.post is a Post instance
-    });
+.then(function(newComment) {
+    // newComment.post is a Post instance
+});
 ```
 
 ### Populating sub-documents
@@ -65,7 +65,27 @@ Populating also works for sub-documents and fields in iterables.
 
 ```js
 comment.populate('likes.user')
-    .then(function(newComment) {
-        
-    });
+.then( ... );
+```
+
+### Field selection
+
+What if we only want a few specific fields returned for the populated documents? This can be accomplished by passing options as the second argument to the populate method:
+
+```js
+comment.populate('user', {
+    select: 'username'
+})
+.then( ... );
+```
+
+### Query conditions
+
+Population can also be limited by a query:
+
+```js
+comment.populate('user', {
+    match: { site_admin: true }
+})
+.then( ... );
 ```

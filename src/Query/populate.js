@@ -1,18 +1,32 @@
 const Promise = require('bluebird');
-const { List } = require('immutable');
+const { List, Record } = require('immutable');
 
 const TypeRef = require('../types/Ref');
 const fieldPath = require('../utils/fieldPath');
 
+
+/**
+ * Option for populating a field
+ */
+const PopulateField = Record({
+    // Path of field to populate
+    path: '',
+    // Only select fields in th fetched documents (TODO)
+    select: [],
+    // Other criteria to use during fetch (TODO)
+    match: {}
+});
+
 /**
  * Populate a specific value in a document.
+ * @param {PopulateField} field
  * @param {String} keyPath
  * @param {Document} doc
  * @param {Type} type
  * @param {Object} cache
  * @return {Promise<Document>} doc
  */
-function populateKeyPath(keyPath, doc, type, cache = {}) {
+function populateKeyPath(field, keyPath, doc, type, cache = {}) {
     const connection = doc.getConnection();
     const setPath = fieldPath.split(keyPath);
     const value = doc.getIn(setPath);
@@ -36,24 +50,24 @@ function populateKeyPath(keyPath, doc, type, cache = {}) {
 
 /**
  * Populate a field by its key in a document.
- * @param {String} field
+ * @param {PopulateField} field
  * @param {Document} doc
  * @param {Object} cache
  * @return {Promise<Document>} doc
  */
 function populateField(field, doc, cache = {}) {
     const schema = doc.getSchema();
-    const type = schema.resolveFieldByKey(field);
-    const keyPaths = schema.resolveFieldPath(doc, field);
+    const type = schema.resolveFieldByKey(field.path);
+    const keyPaths = schema.resolveFieldPath(doc, field.path);
 
     return Promise.reduce(keyPaths.toArray(), (newDoc, keyPath) => {
-        return populateKeyPath(keyPath, newDoc, type, cache);
+        return populateKeyPath(field, keyPath, newDoc, type, cache);
     }, doc);
 }
 
 /**
- * Populate a field in a list of documents
- * @param {String} field
+ * Populate a field in a list of documents.
+ * @param {PopulateField} field
  * @param {List<Document>} docs
  * @param {Object} cache
  * @return {Promise<List<Document>>}
@@ -79,8 +93,13 @@ function populateFieldForDocs(field, docs, cache = {}) {
  */
 function populate(fields, docs, cache = {}) {
     // for now, options of populated fields are not used
-    return Promise.reduce(fields.keySeq(), (newDocs, field) => {
-        return populateFieldForDocs(field, newDocs, cache);
+    return Promise.reduce(fields, (newDocs, [ path, options]) => {
+        const opt = PopulateField({
+            ...options,
+            path
+        });
+
+        return populateFieldForDocs(opt, newDocs, cache);
     }, docs);
 }
 
