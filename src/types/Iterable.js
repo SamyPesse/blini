@@ -100,6 +100,26 @@ class TypeIterable extends Type(DEFAULTS) {
 
         return changes;
     }
+
+    /**
+     * Resolve a field key (ex: "members.user")
+     * into a list of key path "members[0].user".
+     *
+     * @param {String} field
+     * @param {Iterable} value
+     * @return {List<KeyPath>} keyPaths
+     */
+
+    resolveFieldPath(value, field) {
+        const { valueType } = this;
+
+        return value.reduce((keys, innerValue, key) => {
+            return keys.concat(
+                valueType.resolveFieldPath(innerValue, field)
+                .map(path => fieldPath.join(key, path))
+            );
+        }, List());
+    }
 }
 
 module.exports = TypeIterable;

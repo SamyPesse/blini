@@ -122,7 +122,8 @@ describe('Model', function() {
                 return post.populate('user');
             })
             .then(post => {
-                console.log(post);
+                expect(post.user).toExist();
+                expect(post.user.username).toEqual('test-populate');
             });
         });
 

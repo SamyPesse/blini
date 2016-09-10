@@ -2,6 +2,7 @@ const Promise = require('bluebird');
 const { List } = require('immutable');
 
 const TypeRef = require('../types/Ref');
+const fieldPath = require('../utils/fieldPath');
 
 /**
  * Populate a specific value in a document.
@@ -13,7 +14,8 @@ const TypeRef = require('../types/Ref');
  */
 function populateKeyPath(keyPath, doc, type, cache = {}) {
     const connection = doc.getConnection();
-    const value = doc.getIn(keyPath);
+    const setPath = fieldPath.split(keyPath);
+    const value = doc.getIn(setPath);
 
     if (!(type instanceof TypeRef)) {
         return Promise.reject(new Error('Cannot populate non-ref fields'));
@@ -21,14 +23,14 @@ function populateKeyPath(keyPath, doc, type, cache = {}) {
 
     // This reference has already been fetched
     if (cache[value]) {
-        return doc.setIn(keyPath, cache[value]);
+        return doc.setIn(setPath, cache[value]);
     }
 
     // Fetch the reference
     return type.resolve(connection, value)
     .then(function(resolved) {
         cache[value] = resolved;
-        return doc.setIn(keyPath, resolved);
+        return doc.setIn(setPath, resolved);
     });
 }
 
@@ -41,12 +43,12 @@ function populateKeyPath(keyPath, doc, type, cache = {}) {
  */
 function populateField(field, doc, cache = {}) {
     const schema = doc.getSchema();
-    const type = doc.resolveFieldByKey(field);
-    const keyPaths = schema.resolveFieldInDoc(field, doc);
+    const type = schema.resolveFieldByKey(field);
+    const keyPaths = schema.resolveFieldPath(doc, field);
 
-    return keyPaths.reduce(function(prev, keyPath) {
-        return prev.then(newDoc => populateKeyPath(newDoc, keyPath, type, cache));
-    }, Promise(doc));
+    return Promise.reduce(keyPaths.toArray(), (newDoc, keyPath) => {
+        return populateKeyPath(keyPath, newDoc, type, cache);
+    }, doc);
 }
 
 /**
@@ -58,7 +60,7 @@ function populateField(field, doc, cache = {}) {
  */
 function populateFieldForDocs(field, docs, cache = {}) {
     return Promise.reduce(docs, function(accu, doc) {
-        return populateField(field, cache, doc)
+        return populateField(field, doc, cache)
         .then(function(newDoc) {
             return accu.concat([newDoc]);
         });
@@ -76,8 +78,9 @@ function populateFieldForDocs(field, docs, cache = {}) {
  * @return {Promise<List>} docs
  */
 function populate(fields, docs, cache = {}) {
-    return Promise.reduce(fields, function(newDocs, field) {
-        return populateFieldForDocs(field, cache, newDocs);
+    // for now, options of populated fields are not used
+    return Promise.reduce(fields.keySeq(), (newDocs, field) => {
+        return populateFieldForDocs(field, newDocs, cache);
     }, docs);
 }
 

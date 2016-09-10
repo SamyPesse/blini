@@ -103,10 +103,12 @@ class Schema extends Type(DEFAULTS) {
      */
 
     resolveFieldInDoc(field, doc) {
-        // const parts = field.split(FIELD_SEPARATOR);
+        const parts = field.split(fieldPath.FIELD_SEPARATOR);
         const keyPaths = [];
 
-        // TODO
+        parts.reduce((base, part) => {
+
+        });
 
         return List(keyPaths);
     }
@@ -188,6 +190,32 @@ class Schema extends Type(DEFAULTS) {
 
             return changes.concat(fieldChanges);
         }, List());
+    }
+
+    /**
+     * Resolve a field key (ex: "members.user")
+     * into a list of key path "members[0].user".
+     *
+     * @param {Mixed} value
+     * @param {String} field
+     * @return {List<KeyPath>} keyPaths
+     */
+
+    resolveFieldPath(value, field) {
+        const { fields } = this;
+        const parts = fieldPath.split(field);
+        const part  = parts.shift();
+        const next  = fieldPath.join(...parts);
+
+        const innerType = fields.get(part);
+        const innerValue = value.get(part);
+
+        if (!innerType) {
+            return List();
+        }
+
+        return innerType.resolveFieldPath(innerValue, next)
+            .map(path => fieldPath.join(field, path));
     }
 }
 

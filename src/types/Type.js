@@ -75,6 +75,23 @@ const BaseType = (defaultValues = {}) => class extends Record({ ...DEFAULTS, ...
             Change.set(fieldPath, this.toMongo(expected))
         ]);
     }
+
+    /**
+     * Resolve a field key (ex: "members.user")
+     * into a list of key path "members[0].user".
+     *
+     * @param {Mixed} value
+     * @param {String} field
+     * @return {List<KeyPath>} keyPaths
+     */
+
+    resolveFieldPath(value, field) {
+        if (field) {
+            throw new Error('Cannot resolveFieldPath in a native type');
+        } else {
+            return List(['']);
+        }
+    }
 };
 
 module.exports = BaseType;

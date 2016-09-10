@@ -1,5 +1,6 @@
 const Promise = require('q');
-const { List, Map } = require('immutable');
+const Immutable = require('immutable');
+const { List, Map } = Immutable;
 const expect = require('expect');
 
 const { Type, Validation } = require('../src');
@@ -166,6 +167,31 @@ describe('Type', function() {
 
         });
 
+        describe('.resolveFieldPath', function() {
+
+            it('should return all values', function() {
+                const type = Type.List(Type.String());
+
+                const keyPaths = type.resolveFieldPath(List([ 'a', 'b', 'c', 'd' ]));
+
+                expect(keyPaths.toJS()).toEqual([ '0', '1', '2', '3' ]);
+            });
+
+            it('should continue resolving in value', function() {
+                const innerType = Type.List(Type.String());
+                const type = Type.List(innerType);
+
+                const keyPaths = type.resolveFieldPath(Immutable.fromJS([
+                    [ 'a' ],
+                    [ 'b', 'c' ],
+                    [ 'd' ]
+                ]));
+
+                expect(keyPaths.toJS()).toEqual([ '0.0', '1.0', '1.1', '2.0' ]);
+            });
+
+        });
+
     });
 
     describe('Map', function() {
@@ -241,6 +267,44 @@ describe('Type', function() {
                 expect(changes.size).toBe(1);
                 expect(changes.get(0).path).toBe('someMap.c');
                 expect(changes.get(0).type).toBe('$unset');
+            });
+
+        });
+
+        describe('.resolveFieldPath', function() {
+
+            it('should return path if key exists', function() {
+                const type = Type.Map(Type.String());
+
+                const keyPaths = type.resolveFieldPath(Map({
+                    a: 'hello',
+                    b: 'world'
+                }), 'a');
+
+                expect(keyPaths.toJS()).toEqual([ 'a' ]);
+            });
+
+            it('should not return path if key exists', function() {
+                const type = Type.Map(Type.String());
+
+                const keyPaths = type.resolveFieldPath(Map({
+                    a: 'hello',
+                    b: 'world'
+                }), 'c');
+
+                expect(keyPaths.toJS()).toEqual([]);
+            });
+
+            it('should continue resolving in value', function() {
+                const innerType = Type.List(Type.String());
+                const type = Type.Map(innerType);
+
+                const keyPaths = type.resolveFieldPath(Immutable.fromJS({
+                    a: [ 'hello', 'world' ],
+                    b: [ 'world' ]
+                }), 'a');
+
+                expect(keyPaths.toJS()).toEqual([ 'a.0', 'a.1' ]);
             });
 
         });
